@@ -1,0 +1,31 @@
+id
+cccno
+suppressed
+sampletype
+patientcontacted
+adherencemonths
+secondsampledate
+reasonineligible
+otherreasonineligible
+secondsampleres
+actiontaken
+firstreg
+secondreg
+comments
+yearmonth
+
+
+
+
+cccno,suppressed,sampletype,patientcontacted,adherencemonths,secondsampledate,reasonineligible,otherreasonineligible,secondsampleres,actiontaken,firstreg,secondreg,comments,yearmonth,
+
+DB todos,,
+
+change outcomes id to a autoincrement number
+
+add a user column
+
+refresh page after clicking save to show export numbers
+also show alert of data seved successfully
+
+
