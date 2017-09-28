@@ -38,6 +38,7 @@
 {"id":"CS1B","code":"AZT + 3TC + ATV/r","details":"Zidovudine + Lamivudine + Atazanavir/Ritonavir ","age":"paeds","line":"2nd line"},
 {"id":"CS2A","code":"ABC + 3TC + LPV/r","details":"Abacavir + Lamivudine + Lopinavir/Ritonavir","age":"paeds","line":"2nd line"},
 {"id":"CS2C","code":"ABC + 3TC + ATV/r","details":"Abacavir + Lamivudine + Atazanavir/Ritonavir","age":"paeds","line":"2nd line"},
+{"id":"CS4X","code":"Any other 2nd line Paediatric regimens","details":"Total of ANY OTHER Paediatric patients on 2nd line regimens NOT listed above","age":"paeds","line":"2nd line"},
 {"id":"AF1A","code":"AZT + 3TC + NVP","details":"Zidovudine + Lamivudine + Nevirapine","age":"adult","line":"1st line"},
 {"id":"AF1B","code":"AZT + 3TC + EFV","details":"Zidovudine + Lamivudine + Efavirenz","age":"adult","line":"1st line"},
 {"id":"AF1D","code":"AZT + 3TC + DTG","details":"Zidovudine + Lamivudine + Dolutegravir","age":"adult","line":"1st line"},
@@ -65,4 +66,5 @@
 {"id":"CF4A","code":"TDF + 3TC + NVP ","details":"Tenofovir + Lamivudine + Nevirapine (children > 35kg)","age":"paeds","line":"1st line"},
 {"id":"CF4B","code":"TDF + 3TC + EFV","details":"Tenofovir + Lamivudine + Efavirenz","age":"paeds","line":"1st line"},
 {"id":"CF4C","code":"TDF + 3TC + LPV/r","details":"Tenofovir + Lamivudine + Lopinavir/Ritonavir","age":"paeds","line":"1st line"},
-{"id":"CF4D","code":"TDF + 3TC + ATV/r","details":"Tenofovir + Lamivudine + Atazanavir/Ritonavir","age":"paeds","line":"1st line"}]
+{"id":"CF4D","code":"TDF + 3TC + ATV/r","details":"Tenofovir + Lamivudine + Atazanavir/Ritonavir","age":"paeds","line":"1st line"},
+{"id":"CF5X","code":"Any other 1st line Paediatric regimens","details":"Total of ANY OTHER Paediatric patients on 1st line regimens NOT listed above","age":"paeds","line":"1st line"}]

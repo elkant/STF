@@ -70,7 +70,7 @@ String comments=null;
 String timestamp=null;
 String secondregdate=null;
 String collectiondate=null;
-
+String exportid="";
  String dbname="outcomes";       
 
         
@@ -94,8 +94,13 @@ otheroutcomes=request.getParameter("otheroutcomes");
 comments=request.getParameter("comments");
 secondregdate=request.getParameter("secondregdate");
 collectiondate=request.getParameter("datecollected");
+
+
 if(request.getParameter("db")!=null){
 dbname=request.getParameter("db");
+}
+if(request.getParameter("exportid")!=null){
+exportid=request.getParameter("exportid");
 }
          
          
@@ -168,8 +173,23 @@ String usermail="";
                         if(conn.pst1.executeUpdate()==1)
                         {    
                             txtresponse="<font color='green'> Data for <b> "+cccnumber+" </b> updated succesfully for year "+year+" and month  "+month+" </font>";
-                            // sm.Sendemail("STF IMPORT","Hi ,  \nThis is to notify you that data for "+cccnumber+" has been updated succesfully by user "+user+" for year "+year+" and month "+month+". \n \nPlease  do not reply to this mail. It is system generated ", "Updated STF Data for  "+cccnumber+" & year "+year+" , month "+month,"EKaunda@fhi360.org,CKomen@fhi360.org"+usermail);
+                            //if this si a different export , send email notification
+                            if(!exportid.equals("")){
+                                
+                             if(isnewRecords(exportid, user,conn)){
                              
+                                 try {
+                                     //send email
+                                     sm.Sendemail("STF IMPORT","Hi ,  \nThis is to notify you that New STFs data from user "+user.split(",")[0]+" has been updated succesfully. \n \n For more details, generate the STF reports. \n \nPlease do not reply to this mail, It is system generated. ", "Updated STF Data"," EKaunda@fhi360.org,CKomen@fhi360.org,"+usermail);
+                                 } catch (MessagingException ex) {
+                                     Logger.getLogger(exportdata.class.getName()).log(Level.SEVERE, null, ex);
+                                 }
+                                
+                                 
+                             }
+                            }
+                              
+                            
                         }
                         else 
                         {
@@ -225,10 +245,27 @@ String usermail="";
                         if(conn.pst1.executeUpdate()==1){
                             
                             txtresponse="<font color='green'> Data for "+cccnumber+" added succesfully for year "+year+" and month "+month+" </font>";
-                           
+                           //isnewRecords(String id, String emails, dbConnweb conn)
                             //add team leaders variable at this point 
                             //sm.Sendemail("STF IMPORT"," Hi, \nThis is to notify you that new data for patient whose CCC number is "+cccnumber+" has been added succesfully by   user "+user+" for Year "+year+" and month "+month+". \n \n Please do not reply to this mail. It is system generated ", "STF data export for "+cccnumber+" & Year "+year+" , Month "+month,"EKaunda@fhi360.org,CKomen@fhi360.org"+usermail);
-                                                        } 
+                                                       
+                          if(!exportid.equals("")){
+                                
+                             if(isnewRecords(exportid, user,conn)){
+                             
+                                 try {
+                                     //send email
+                                     sm.Sendemail("STF IMPORT","Hi ,  \nThis is to notify you that New STFs data from user "+user.split(",")[0]+" has been exported succesfully. \n \n For more details, generate the STF reports. \n \nPlease do not reply to this mail, It is system generated. ", "New STF Data"," EKaunda@fhi360.org,MObuya@fhi360.org,"+usermail);
+                                 } catch (MessagingException ex) {
+                                     Logger.getLogger(exportdata.class.getName()).log(Level.SEVERE, null, ex);
+                                 }
+                                
+                                 
+                             }
+                            }
+                        
+                        
+                        } 
                         else {
                             
                           txtresponse="<font color='green'>Data for "+cccnumber+" </font><font color='red'>  NOT inserted </font><font color='green'> succesfully for year "+year+" and month "+month+". This could be a duplicate error. </font>";
@@ -264,29 +301,14 @@ String usermail="";
         
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -303,4 +325,32 @@ String usermail="";
         return "Short description";
     }// </editor-fold>
 
+    
+    public boolean isnewRecords(String id, String emails, dbConnweb conn){
+         boolean isrecordnew=false;
+        try {
+           
+            
+            String check="select id from exporthistory where id='"+id+"' ";
+            conn.rs_6=conn.st_6.executeQuery(check);
+            
+            if(conn.rs_6.next()){
+             isrecordnew=false;   
+            }
+            else {
+            // insert
+                isrecordnew=true;
+                
+                conn.st_5.executeUpdate("insert into exporthistory (id,users) value ('"+id+"','"+emails+"')");
+            }
+            
+            
+            
+          
+        } catch (SQLException ex) {
+            Logger.getLogger(exportdata.class.getName()).log(Level.SEVERE, null, ex);
+        }
+          return isrecordnew;
+    }
+    
 }

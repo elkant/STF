@@ -69,10 +69,8 @@ input:focus {
                             Help
                         </a></li>
                         <li>
-                  <a  title="" id='loginbtn' data-toggle="modal" href="#accesscodemodal">
-                            <i class="glyphicon glyphicon-log-in"></i>
-                            login
-                        </a></li>
+                  <a  title="" id='loginbtn' data-toggle="modal" href="#accesscodemodal"><i class="glyphicon glyphicon-log-in"></i>login</a></li>
+                        <li><a  title=""  data-toggle="modal" href="#datasavedmodal">.</a></li>
                               <li><a href="#" style="display:none;" onclick="closeapp();"><i class="glyphicon glyphicon-lock"></i> Exit</a></li>
             </ul>
         </div>
@@ -92,7 +90,7 @@ input:focus {
 
             
             
-          <h5 style="text-align: center;color:blue;">STF version 1.0.0 <label id='totalcccnos'>.</label></h5>
+          <h5 style="text-align: center;color:blue;">STF version 1.0.1 <label id='totalcccnos'>.</label></h5>
 
       
       
@@ -648,7 +646,7 @@ input:focus {
             <div class="modal-body">
                 <form id="exportdataform">
                    
-              <button class=" btn-lg btn-success" style="text-align: center;" id="exportbutton" onclick="importdata();importdata_logitudinal();"> Export Data</button>
+              <button class=" btn-lg btn-success" style="text-align: center;" id="exportbutton" onclick="importdata();"> Export Data</button>
               
               
               <button class=" btn-lg btn-info" style="display:none;text-align: center;"  id="exportmsg" > Exporting Data..</button>
@@ -714,6 +712,54 @@ input:focus {
 </div>
 
 
+
+
+
+
+
+
+
+
+<div class="modal" id="datasavedmodal" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" >
+                <button type="button"  class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                <h4 class="modal-title" id="datasavedmsg"> <font color="green"><b> Data saved successfully!</b></font></h4>
+                <label style="color:red;" ></label>
+            </div>
+            <div class="modal-body">
+                <form action="#"  method="post">
+                 <div class="control-group">
+                                    <label><font color="green"><b> </b></font> </label>
+                                    
+                                    <div class="controls">
+                                       
+                                    </div>
+                                </div> 
+                    
+                                <div class="control-group">
+                                    <label></label>
+                                    <div class="controls">
+                                        <label     style="margin-left: 50%;" data-dismiss="modal" class="btn-lg btn-success active">
+                                            x
+                                        </label>
+                                    </div>
+                                </div>   
+                    
+                </form>
+            </div>
+            <div class="modal-footer">
+                <a href="#" data-dismiss="modal" class="btn">close</a>
+              
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dalog -->
+</div>
+
+<!------------------------------------>
 
 
 
@@ -919,8 +965,8 @@ input:focus {
                     
                  
     
-    //var hostname="http://104.45.29.195";
-  var hostname="http://localhost";
+    var hostname="http://104.45.29.195";
+  //var hostname="http://localhost";
 
      // todayHighlight: true, daysOfWeekDisabled: "0,6",clearBtn: true, autoclose: true,format: "yyyy-mm-dd",
                  </script>
@@ -1182,6 +1228,7 @@ return userdb.put(doc); //continue from here
             if(doc.username!==''){
  $("#username").val(doc.username);
  $("#usernamelabel").html(" Hi "+doc.username+ " ("+doc.facility+")");
+  $("#supervisormail").val(doc.supervisormail);
  user=doc.username;
            
             var allsts=doc.facility+"";
@@ -1197,7 +1244,7 @@ return userdb.put(doc); //continue from here
  
 });
 	}
-     showuser('aphiaplus','','','');
+     showuser('aphiaplus','','','');//This is for displaying the already selected options
    function loaduser(){
    //alert("save called");   
    var user=$("#username").val();   
@@ -2031,6 +2078,9 @@ secondregdate=$("#secondregdate").val();
        
        else {
            
+            $('#datasavedmodal').click(); 
+            $('#datasavedmsg').html("<font  color='green'>Data saved successfully!</font>"); 
+           
       id=cccnumber+"_"+year+"_"+month;
       //this should not be cleared
       $("#rowid").val(id);
@@ -2487,6 +2537,9 @@ secondregdate=$("#secondregdate").val();
           
        
        else {
+           
+             $('#datasavedmodal').click(); 
+            $('#datasavedmsg').html("<font  color='green'>Data updated successfully!</font>"); 
     
           saveweeklyupdates(id,datecollected,year,month,cccnumber,sampletype,patientcontacted,adherencemonths,secondsampledate,noteligible,noteligibleother,secondsampleresults,actiontaken,firstregimen,secondregimen,thirdregimen,otheroutcomes,comments,timestamp,user, syncstatus,secondregdate) ;
           insertlongitudinaldata(id,datecollected,year,month,cccnumber,sampletype,patientcontacted,adherencemonths,secondsampledate,noteligible,noteligibleother,secondsampleresults,actiontaken,firstregimen,secondregimen,thirdregimen,otheroutcomes,comments,timestamp,user, syncstatus,secondregdate) ;
@@ -2603,6 +2656,10 @@ function importdata(){
     $("#exportbutton").removeClass('btn-lg btn-success').addClass('btn btn-default');
 
                 //read db files that have not been synced
+                
+                
+                var uniqid=tarehe_masaa();
+                
     
   $("#exportbutton").hide();
   $("#exportmsg").show();
@@ -2673,6 +2730,7 @@ comments:dat.doc.comments,
 secondregdate:dat.doc.secondregdate,                  
           timestamp:dat.doc.timestamp,
           user:dat.doc.user+""+supv,//added supervisor email
+           exportid:uniqid,
       db:'outcomes'},
           dataType: 'html',  
                     success: function(data) {
@@ -2739,7 +2797,7 @@ secondregdate:dat.doc.secondregdate,
   //$("#exportmsg").hide();	
    //refresh number of uninmported sites.
    //unsynceddata()
-        
+     importdata_logitudinal(uniqid);   
         
 }
 
@@ -2747,9 +2805,15 @@ secondregdate:dat.doc.secondregdate,
 var syncstatusarray1=[];
 
 
-function importdata_logitudinal(){
+function importdata_logitudinal(exportid){
     
    // $('#exportbutton').on('click',function() {
+   
+   var supv=""; 
+             if($("#supervisormail").val()!=null && $("#supervisormail").val()!='')
+             {
+                 supv=","+$("#supervisormail").val();
+             } 
   
   outcomedatadb_longitudinal.allDocs({include_docs: true, descending: true}).then( function(doc) { 
  syncstatusarray1=[];
@@ -2809,6 +2873,8 @@ comments:dat.doc.comments,
 secondregdate:dat.doc.secondregdate,                  
           timestamp:dat.doc.timestamp,
           user:dat.doc.user,
+          user:dat.doc.user+""+supv,//added supervisor email
+           exportid:exportid,
       db:'outcomes_logitudinal'},
           dataType: 'html',  
                     success: function(data) {
@@ -3711,6 +3777,15 @@ function tarehe(){
     
       var today = new Date();
   var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+   
+ return date;   
+}
+
+function tarehe_masaa(){
+    
+    
+      var today = new Date();
+  var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()+'_'+today.getHours()+'-'+today.getMinutes();
    
  return date;   
 }

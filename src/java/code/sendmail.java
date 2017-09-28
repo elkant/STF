@@ -32,12 +32,12 @@ public String filenames,cu,dates,computername,senderofmail;
  public boolean Sendemail (String senderofemail,String ujumbe , String subject, String mailreceiver)throws MessagingException {
      String toAddress=mailreceiver;
         
-        senderofmail="APHIAPLUS MOIS";
+        senderofmail="APHIAPLUS STF";
        
         if(!toAddress.equals("")){
-        toAddress+=",";
+        //toAddress+=",";
         }
-        toAddress+="ekmanukaka5@gmail.com";
+        //toAddress+="ekmanukaka5@gmail.com";
         String host = "smtp.gmail.com";
         String Password ="plusaphia";
         String from = "aphiabackup@gmail.com";
