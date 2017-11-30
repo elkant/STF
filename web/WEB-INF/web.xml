@@ -20,6 +20,18 @@
         <servlet-name>UploadSTFData</servlet-name>
         <servlet-class>Data.UploadSTFData</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RawData</servlet-name>
+        <servlet-class>reports.RawData</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>IdGenerator</servlet-name>
+        <servlet-class>General.IdGenerator</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>reportingrates</servlet-name>
+        <servlet-class>reports.reportingrates</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>showfacils</servlet-name>
         <url-pattern>/showfacils</url-pattern>
@@ -39,6 +51,18 @@
     <servlet-mapping>
         <servlet-name>UploadSTFData</servlet-name>
         <url-pattern>/UploadSTFData</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RawData</servlet-name>
+        <url-pattern>/RawData</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>IdGenerator</servlet-name>
+        <url-pattern>/IdGenerator</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>reportingrates</servlet-name>
+        <url-pattern>/reportingrates</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -70,6 +70,8 @@ input:focus {
                         </a></li>
                         <li>
                   <a  title="" id='loginbtn' data-toggle="modal" href="#accesscodemodal"><i class="glyphicon glyphicon-log-in"></i>login</a></li>
+                         <li>
+                  <a  title="" id='summaryrptbtn' data-toggle="modal" href="#summarybtn"><i class="glyphicon glyphicon-stats"></i>Reporting rate</a></li>
                         <li><a  title=""  data-toggle="modal" href="#datasavedmodal">.</a></li>
                               <li><a href="#" style="display:none;" onclick="closeapp();"><i class="glyphicon glyphicon-lock"></i> Exit</a></li>
             </ul>
@@ -90,7 +92,7 @@ input:focus {
 
             
             
-          <h5 style="text-align: center;color:blue;">STF version 1.0.1 <label id='totalcccnos'>.</label></h5>
+          <h5 style="text-align: center;color:blue;">STF version 1.2.2 <label id='totalcccnos'>.</label></h5>
 
       
       
@@ -122,10 +124,10 @@ input:focus {
                             <i class="glyphicon glyphicon-cog"></i>
                             <br> Settings
                         </a>-->
-<!--                       <a class="btn btn-primary col-sm-3" title="Excel report" data-toggle="modal" href="#excelreport">
+                     <a class="btn btn-success col-sm-3" title="Excel report" data-toggle="modal" href="#excelreport">
                             <i class="glyphicon glyphicon-stats"></i>
                             <br> Excel Report
-                        </a> -->
+                        </a> 
                     </div>
 
                     <hr>
@@ -140,6 +142,7 @@ input:focus {
                             <!--<li class="active editdata" style='display:none;' ><a href="#dataentry" id="newdatabutton" data-toggle="tab">  <i class="glyphicon glyphicon-edit"></i> Edit Data</a></li>-->
                             <li><a href="#reports" style="display:none;" id="reportsbutton" data-toggle="tab"> <i class="glyphicon glyphicon-stats"></i> Report</a></li> 
                             <li><a href="#searchdata" data-toggle="tab"> <i class="glyphicon glyphicon-search"></i> View Data</a></li> 
+                            <li><a href="#cleardata" data-toggle="tab"> <i class="glyphicon glyphicon-search"></i> Clear synced data</a></li> 
                            <!-- <li><a href="#export" data-toggle="tab"> <i class="glyphicon glyphicon-cloud-upload"></i> Data Export</a></li>-->
                         </ul>
                         <div class="tab-content">
@@ -843,31 +846,29 @@ input:focus {
                                     </div>
                                 </div> 
                     
-                      <div class="control-group" >
-                                    <label>Report Type</label>
+                      
+                    
+                                <div class="control-group" >
+                                    <label>County</label>
                                     <div class="controls">
-                                        <select  name="rpt_type" id="rpt_type" style="width:100%;" class="form-control">
-                                           
-                                             <option title="From 1st October of the selected date year to the end date specified inside the same date year " value="excelreport_cumulative">Cumulative</option>
-                                             <option title="Weekly data breakdown per sites" value="excelreport_weekly">Weekly</option>
-                                            
-                                            
+                                        <select  name="rpt_county" id="rpt_county" style="width:100%;" onchange="loadsubcounty();" class="form-control">
+                                            <option value="">Select County (optional)</option>
+                                             <option value="Baringo">Baringo</option>
+                                             <option value="Kajiado">Kajiado</option>
+                                             <option value="Laikipia">Laikipia</option>
+                                             <option value="Nakuru">Nakuru</option>
+                                             <option value="Narok">Narok</option>                                           
                                            
                                         </select>
                                     </div>
                                 </div>
                     
                     <div class="control-group" >
-                                    <label>County</label>
+                                    <label>Sub-County</label>
                                     <div class="controls">
-                                        <select  name="rpt_county" id="rpt_county" style="width:100%;" class="form-control">
-                                            <option value="">Select County (optional)</option>
-                                             <option value="Baringo">Baringo</option>
-                                             <option value="Kajiado">Kajiado</option>
-                                             <option value="Laikipia">Laikipia</option>
-                                             <option value="Nakuru">Nakuru</option>
-                                             <option value="Narok">Narok</option>
-                                            
+                                        <select  name="rpt_subcounty" id="rpt_subcounty" style="width:100%;" class="form-control">
+                                            <option value="">Select County</option>
+                                                                                       
                                            
                                         </select>
                                     </div>
@@ -946,6 +947,40 @@ input:focus {
     <!-- /.modal-dalog -->
 </div>
 
+<div class="modal" id="summarybtn">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Reporting rates (realtime)</h4>
+            </div>
+            <div class="modal-body">
+                <p><b>This  is a summary of the reporting rates for your selected sites.</b></p>
+                <table class="table table-hover table-bordered" >
+             <tr> <td>STFs Uploaded in the database:
+             </td><td><b><p id="uploadedstfs">_</p></b></td></tr>
+                
+             <tr><td>STFs synced to your device:
+             </td><td><b><p id="syncedstfs">_</p></b></td></tr>
+                 
+             <tr> <td>STFs Updated:</h3>
+             </td><td><b><p id="updatedstfs">_</p></b></td></tr>
+           
+             <tr> <td>STFs Not Updated
+             </td><td><b><p id="notupdatedstfs">_</p></b></td></tr>
+             
+               </table>
+            </div>
+            <div class="modal-footer">
+                <a href="#" data-dismiss="modal" class="btn">Close</a>
+               
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dalog -->
+</div>
+
 
 
 
@@ -965,8 +1000,8 @@ input:focus {
                     
                  
     
-    var hostname="http://104.45.29.195";
-  //var hostname="http://localhost";
+  var hostname="http://104.45.29.195";
+    //var hostname="http://localhost";
 
      // todayHighlight: true, daysOfWeekDisabled: "0,6",clearBtn: true, autoclose: true,format: "yyyy-mm-dd",
                  </script>
@@ -1432,8 +1467,23 @@ var curfacil=doc.facility+"";
 
 var selectfacils=$("#facilityname").val()+"";
 
-//console.log(" facility kwa select ni "+selectfacils);
+var siteszote=curfacil.split(",");
 
+var hospitalizote="";
+var lp=0;
+for(lp=0;lp<siteszote.length;lp++){
+    
+   hospitalizote +="'"+siteszote[lp].split("_")[0]+"'";
+   if(siteszote.length>1 && lp<(parseInt(siteszote.length)-1)){ hospitalizote +=",";  }
+    
+}
+
+//var selectedItems= $('#facilityname option:selected');
+console.log(" facility kwa select ni "+hospitalizote);
+
+//call function for displaying update status
+
+reportingRates(hospitalizote);
 var facilis=curfacil;
   
 if(facilis!==selectfacils && selectfacils!=='' && selectfacils!=='null'){
@@ -1454,12 +1504,6 @@ if(facilis!==selectfacils && selectfacils!=='' && selectfacils!=='null'){
                     dataType: 'json',  
                     success: function(data) {
                    
-                  
-                     
-                          
-                      
-                 
-                  
 
 
   for(var i=0;i<data.length;i++){
@@ -1495,13 +1539,7 @@ else {
     
 }
                                     
-
-                   
-                
-                       
-                   
-        
-                                           }
+ }
                         
                          });
                      }//end of else
@@ -3035,11 +3073,16 @@ function totalvldata(){
                if(cnt1===1){
                    
                     displaytext=" ["+cnt1+" stf record]";
+                    
+                    
                }
-              
-          	                    } //end of for loop
+               } //end of for loop
 	 
 	$("#totalcccnos").html(" "+displaytext+"");
+        
+        $("#syncedstfs").html(""+cnt1+"");
+        
+        
         if(cnt1<=0){
             $("#totalcccnos").hide();           
             
@@ -3408,7 +3451,7 @@ function getreport(){
     var exelstart=$("#startdaterpt").val();
     var exelend=$("#enddaterpt").val();
     var countyrpt=$("#rpt_county").val();
-    var rpttypeurl=$("#rpt_type").val();   
+    var rptsubcounty=$("#rpt_subcounty").val();   
         if (exelstart==='')
      {
          
@@ -3429,7 +3472,7 @@ function getreport(){
                 }
                 else {
                     //call the report generation page
-                 downloadrpt(exelstart,exelend,countyrpt,rpttypeurl) ;  
+                 downloadrpt(exelstart,exelend,countyrpt,rptsubcounty) ;  
                     
                 }
         
@@ -3438,16 +3481,26 @@ function getreport(){
 
 
 
-  function downloadrpt(startdate,enddate,cnty,rpttypeurl){
+  function downloadrpt(startdate,enddate,cnty,rptsubcounty){
       
                 $('.loading').show();
                 $('#excelreportbtn').hide();
                
                 //?startdate=" + startdate + "&enddate=" + enddate + "&cbos=" + cbos
              
-                var ur=hostname+":8080/STF/"+rpttypeurl+"?startdate=" + startdate + "&enddate=" + enddate+ "&county=" + cnty ;
- console.log(ur);
-                $.fileDownload(ur).done(function () { $('.loading').hide(); $('#excelreportbtn').show(); $('#excelreportbtn').html("<i class='glyphicon glyphicon-ok'></i> Report Generated"); }).fail(function () { alert('Report generation failed, kindly try again!'); $('.loading').hide(); $('#excelreportbtn').show(); });
+                var ur=hostname+":8080/STF/RawData?startdate="+startdate+"&enddate="+enddate+"&rpt_county="+cnty+"&rpt_subcounty="+rptsubcounty;
+                console.log(ur);
+                $.fileDownload(ur).done( function () {
+                   // alert("done");
+                    $('.loading').hide(); 
+                    $('#excelreportbtn').show();
+                    $('#excelreportbtn').html("<i class='glyphicon glyphicon-ok'></i> Report Generated"); 
+                                                    })
+                  .fail(function () {
+                      alert('Report generation failed, kindly try again!'); 
+                      $('.loading').hide(); 
+                      $('#excelreportbtn').show(); 
+                                     });
  
                 //$('.loading').hide();
             }
@@ -3788,7 +3841,76 @@ function tarehe_masaa(){
   var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()+'_'+today.getHours()+'-'+today.getMinutes();
    
  return date;   
+
 }
+
+function loadsubcounty() {
+    var cnty=$("#rpt_county").val();
+    
+   
+         $.getJSON("subcounty.json",function(result){
+             var subcounty="";
+             var county="";
+             
+         
+             
+             var subcounty="<option value=''>Select subcounty</option>";
+            
+             
+             for(a=0;a< result.length; a++){
+                 
+                  if(result[a].County===cnty){
+                 
+            subcounty+="<option value='"+result[a].SubCounty+"'> "+result[a].SubCounty+" </option>";
+                                                
+                                              }
+                 
+             
+                 
+                                            }
+        
+       
+        $("#rpt_subcounty").html(subcounty);
+       
+        
+             
+        
+         }); 
+    
+    
+}
+
+
+function reportingRates( mflcodes){
+    
+    
+    
+     $.ajax({
+                    url:hostname+":8080/STF/reportingrates?rpt_facils="+mflcodes,                            
+                    type:'post',  
+                    dataType: 'json',  
+                    success: function(data) {
+                   
+
+
+
+     console.log(data);
+      $("#uploadedstfs").html(data["uploadedstfs"]); 
+      $("#updatedstfs").html(data["updatedstfs"]); 
+      $("#notupdatedstfs").html(data["notupdatedstfs"]); 
+         
+
+
+//console.log(" selected cccno kwa sasa ni :_"+$("#cccno").val()+"_");
+
+                                    
+ }
+                        
+                         });
+    
+    
+}
+
 
 </script>
 

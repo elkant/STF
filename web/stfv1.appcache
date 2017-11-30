@@ -1,9 +1,10 @@
 CACHE MANIFEST
-# 2017-10-07 v1.3.35
+# 2017-10-07 v1.3.70
 js/pouchdb.min.js
 drugs1.json
 sites.json
 months.json
+subcounty.json
 images/logo.png
 css/dataTables.bootstrap.min.css
 css/jquery.dataTables.min.css
