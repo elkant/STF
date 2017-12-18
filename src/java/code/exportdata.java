@@ -16,6 +16,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import scripts.updatestatus;
 
 
 /**
@@ -110,6 +111,9 @@ String usermail="";
  if(user.contains("@") && (user.contains(".com") || user.contains(".org")  )){usermail=","+user;}
  
          
+ 
+ updatestatus us= new updatestatus();
+ 
           
           //set maxconnection
 
@@ -171,7 +175,11 @@ String usermail="";
                         
                         
                         if(conn.pst1.executeUpdate()==1)
-                        {    
+                        {
+                            
+                             String mywhere=" isupdated=0 and Patient_CCC_No='"+cccnumber+"'";
+            us.numberofupdates(mywhere, conn);
+                            
                             txtresponse="<font color='green'> Data for <b> "+cccnumber+" </b> updated succesfully for year "+year+" and month  "+month+" </font>";
                             //if this si a different export , send email notification
                             if(!exportid.equals("")){
@@ -180,7 +188,7 @@ String usermail="";
                              
                                  try {
                                      //send email
-                                     sm.Sendemail("STF IMPORT","Hi ,  \nThis is to notify you that New STFs data from user "+user.split(",")[0]+" has been updated succesfully. \n \n For more details, generate the STF reports. \n \nPlease do not reply to this mail, It is system generated. ", "Updated STF Data"," EKaunda@fhi360.org,CKomen@fhi360.org,"+usermail);
+                                     sm.Sendemail("STF IMPORT","Hi ,  \nThis is to notify you that New STFs data from user "+user.split(",")[0]+" has been updated succesfully. \n \n For more details, generate output reports http://104.45.29.195:8080/STF/. \n \nPlease do not reply to this mail, It is system generated. ", "Updated STF Data"," EKaunda@fhi360.org,Pnjoka@fhi360.org,"+usermail);
                                  } catch (MessagingException ex) {
                                      Logger.getLogger(exportdata.class.getName()).log(Level.SEVERE, null, ex);
                                  }
@@ -244,6 +252,9 @@ String usermail="";
                         
                         if(conn.pst1.executeUpdate()==1){
                             
+                            String mywhere=" isupdated=0 and Patient_CCC_No='"+cccnumber+"'";
+                            us.numberofupdates(mywhere, conn);
+                            
                             txtresponse="<font color='green'> Data for "+cccnumber+" added succesfully for year "+year+" and month "+month+" </font>";
                            //isnewRecords(String id, String emails, dbConnweb conn)
                             //add team leaders variable at this point 
@@ -255,7 +266,7 @@ String usermail="";
                              
                                  try {
                                      //send email
-                                     sm.Sendemail("STF IMPORT","Hi ,  \nThis is to notify you that New STFs data from user "+user.split(",")[0]+" has been exported succesfully. \n \n For more details, generate the STF reports. \n \nPlease do not reply to this mail, It is system generated. ", "New STF Data"," EKaunda@fhi360.org,MObuya@fhi360.org,"+usermail);
+                                     sm.Sendemail("STF IMPORT","Hi ,  \nThis is to notify you that New STFs data from user "+user.split(",")[0]+" has been exported succesfully. \n \n For more details, generate output reports here http://104.45.29.195:8080/STF/. \n \nPlease do not reply to this mail, It is system generated. ", "New STF Data"," EKaunda@fhi360.org,PNjoka@fhi360.org,"+usermail);
                                  } catch (MessagingException ex) {
                                      Logger.getLogger(exportdata.class.getName()).log(Level.SEVERE, null, ex);
                                  }

@@ -32,6 +32,14 @@
         <servlet-name>reportingrates</servlet-name>
         <servlet-class>reports.reportingrates</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>updatemfl</servlet-name>
+        <servlet-class>scripts.updatemfl</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>updatestatus</servlet-name>
+        <servlet-class>scripts.updatestatus</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>showfacils</servlet-name>
         <url-pattern>/showfacils</url-pattern>
@@ -63,6 +71,14 @@
     <servlet-mapping>
         <servlet-name>reportingrates</servlet-name>
         <url-pattern>/reportingrates</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>updatemfl</servlet-name>
+        <url-pattern>/updatemfl</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>updatestatus</servlet-name>
+        <url-pattern>/updatestatus</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

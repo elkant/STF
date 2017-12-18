@@ -92,7 +92,7 @@ input:focus {
 
             
             
-          <h5 style="text-align: center;color:blue;">STF version 1.2.2 <label id='totalcccnos'>.</label></h5>
+          <h5 style="text-align: center;color:blue;">STF version 1.2.3 <label id='totalcccnos'>.</label></h5>
 
       
       
@@ -611,6 +611,18 @@ input:focus {
                                 </div>    
                                <!--- Data export---->
                             </div>
+                            <div class="tab-pane well" id="cleardata">
+                                 
+                                <div >
+                                    
+                                 <h3>Clear synced CCC numbers</h3>
+            <p>To clear the ccc numbers and request for new ones, click the RESET button below  </p>
+            <button onclick=" resetcccdb();" id="resetdbbtn1" style="margin-left: 30%;" class="btn-lg btn-info active">
+                                            Reset
+                                </button> 
+                                </div>    
+                               <!--- Data export---->
+                            </div>
                             
                             
                             </div>
@@ -936,6 +948,13 @@ input:focus {
                  <h3>Data Export</h3>
                 <p>Data is saved on your  device and should be shared to a server for analysis </p>
                 <p>If there is Any un-exported that has  been saved offline, the user will be reminded to create an export by seeing yellow text showing number of sites whose data has not been exported .</p>
+           
+            <h3>Reset CCC records</h3>
+            <p>To clear existing new ccc numbers and request for new ones, click the RESET button  </p>
+            <button onclick=" resetcccdb();" id="resetdbbtn" style="margin-left: 30%;" class="btn-lg btn-info active">
+                                            Reset
+                                        </button>
+            
             </div>
             <div class="modal-footer">
                 <a href="#" data-dismiss="modal" class="btn">Close</a>
@@ -1000,8 +1019,8 @@ input:focus {
                     
                  
     
-  var hostname="http://104.45.29.195";
-    //var hostname="http://localhost";
+   var hostname="http://104.45.29.195";
+   // var hostname="http://localhost";
 
      // todayHighlight: true, daysOfWeekDisabled: "0,6",clearBtn: true, autoclose: true,format: "yyyy-mm-dd",
                  </script>
@@ -1508,15 +1527,19 @@ if(facilis!==selectfacils && selectfacils!=='' && selectfacils!=='null'){
 
   for(var i=0;i<data.length;i++){
      //console.log(curfacil+"_vs_"+data[i].mflcode+"="+curfacil.indexOf(data[i].mflcode)); 
-      if(facilis.indexOf(data[i].mflcode)>=0){
+      if(facilis.indexOf(data[i].mflcode)>=0)
+      {
+          var cccupdated="";
+               if( parseInt(data[i].updatestatus)> 0 ){ cccupdated="(updated) ";  }
               
-                      vldat+="<option title='' data-collectiondate='"+data[i].datecollected+"' value='"+data[i].cccno+"'>"+data[i].cccno+"</option>";
+                      vldat+="<option title='' data-collectiondate='"+data[i].datecollected+"' value='"+data[i].cccno+"'>"+cccupdated+""+data[i].cccno+"</option>";
                  
-                        addvldata(data[i].cccno,data[i].datecollected,data[i].mflcode,data[i].facility_name,data[i].county,data[i].subcounty,'0');
-                        updatevldata(data[i].cccno,data[i].datecollected,data[i].mflcode,data[i].facility_name,data[i].county,data[i].subcounty,'0');
+                        addvldata(data[i].cccno,data[i].datecollected,data[i].mflcode,data[i].facility_name,data[i].county,data[i].subcounty,data[i].updatestatus);
+                        updatevldata(data[i].cccno,data[i].datecollected,data[i].mflcode,data[i].facility_name,data[i].county,data[i].subcounty,data[i].updatestatus);
                        // console.log(" insert cccno "+data[i].cccno);
                         
-            }    }
+            }    
+        }
 
 
 //console.log(" selected cccno kwa sasa ni :_"+$("#cccno").val()+"_");
@@ -1909,7 +1932,7 @@ function showvldetailed(faciliname){
                   if(facili.indexOf(mfli)>=0 && dispatchdate.substring(0,4)===dispatchyear && dispatchdate.substring(5, 7)===dispatchmonth){
                         //console.log("Compare dispatch date "+dispatchdate+" and dispatch year "+dispatchyear+" __vs_ "+dispatchmonth);
                       
-                      if(dat.doc.isupdated==='1')
+                      if( parseInt(dat.doc.isupdated)> 0 )
                       {
                           
                       vldat+="<option title='outcome records updated' data-collectiondate='"+dat.doc.datecollected+"' value='"+dat.doc.cccno+"'>(updated) "+dat.doc.cccno+"</option>";
@@ -3546,11 +3569,30 @@ outcomedatadb.get(id).then(function(doc) {
 }).then(function (result) {
     unsynceddata();
   // handle result
-}).catch(function (err) {
+}).catch(function (err) 
+{
   console.log(err);
 });
 
   
+    
+}
+
+
+function resetcccdb(){
+    
+    vldb.destroy(function (err, response) {
+   if (err) {
+      return console.log(err);
+   } else {
+      console.log ("CCC Database Deleted");
+     // $("#resetdbbtn").hide();
+      $("#resetdbbtn1").html("Reset successful!");
+      $("#resetdbbtn").html("Reset successful!");
+      
+   }
+                                        });
+    
     
 }
 
@@ -3901,7 +3943,7 @@ function reportingRates( mflcodes){
          
 
 
-//console.log(" selected cccno kwa sasa ni :_"+$("#cccno").val()+"_");
+//console.log(" uploaded records :_"+data["updatedstfs"]+"_");
 
                                     
  }

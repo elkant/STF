@@ -27,6 +27,7 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import scripts.updatemfl;
 @MultipartConfig(fileSizeThreshold=1024*1024*20, 	// 20 MB 
                  maxFileSize=1024*1024*50,      	// 50 MB
                  maxRequestSize=1024*1024*100) 
@@ -176,7 +177,13 @@ else if(cellFacility_Name.getCellType()==1){
 
 MFL_Code=getMFLCode(conn, Facility_Name);
 
+if(MFL_Code.equals("")){
+    
+updatemfl uc= new updatemfl();
 
+MFL_Code=uc.getMFLCode(conn, Facility_Name);
+    
+                       }
 //        5_______________________County__________________________
 XSSFCell cellCounty = rowi.getCell((short) 5);
 System.out.println("___i is__"+i);
@@ -584,15 +591,15 @@ i++;
         }
         return contentDisp;
     }
-      private String getMFLCode(dbConnweb conn, String facility_name) throws SQLException{
+      public String getMFLCode(dbConnweb conn, String facility_name) throws SQLException{
           String mfl_code="";
           
-       String getmfl_code = "SELECT mfl_code from facility_list WHERE facility_name=?";
+       String getmfl_code = "SELECT mfl_code from facility_list WHERE facility_name like ?";
        conn.pst=conn.conne.prepareStatement(getmfl_code);
        conn.pst.setString(1, facility_name);
-       conn.rs = conn.pst.executeQuery();
-       if(conn.rs.next()){
-           mfl_code = conn.rs.getString(1);
+       conn.rs2 = conn.pst.executeQuery();
+       if(conn.rs2.next()){
+           mfl_code = conn.rs2.getString(1);
        }
           return mfl_code;
       }

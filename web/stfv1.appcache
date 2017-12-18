@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# 2017-10-07 v1.3.70
+# 2017-12-18 v1.3.80
 js/pouchdb.min.js
 drugs1.json
 sites.json
@@ -22,7 +22,7 @@ js/datatables.min.js
 js/jquery.fileDownload.js
 images/ajax_loader.gif
 images/favicon.ico
-images/sort_asc.png
+images/sort_asc.png 
 images/sort_asc_disabled.png
 images/sort_both.png
 images/sort_desc.png

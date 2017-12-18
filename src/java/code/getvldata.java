@@ -72,7 +72,9 @@ public class getvldata extends HttpServlet {
             
             }
             JSONArray jarr=new JSONArray();
-            String getfacils="SELECT Patient_CCC_No as cccno,Facility_Name as facilityname,MFL_Code as Mflcode, Date_of_Dispatch as datecollected,County as  county,Sub_County as subcounty FROM  vl_validation "+mywhere+" order by timestamp desc";
+            String getfacils="SELECT Patient_CCC_No as cccno,Facility_Name as facilityname,MFL_Code as Mflcode, Date_of_Dispatch as datecollected,County as  county,Sub_County as subcounty,isupdated FROM  vl_validation "+mywhere+" order by timestamp desc";
+            
+            System.out.println(""+getfacils);
             
             conn.rs=conn.st.executeQuery(getfacils);
             while (conn.rs.next()){
@@ -83,6 +85,7 @@ public class getvldata extends HttpServlet {
             jobj.put("subcounty",conn.rs.getString("subcounty"));
             jobj.put("facility_name",conn.rs.getString("facilityname"));
             jobj.put("datecollected",conn.rs.getString("datecollected"));
+            jobj.put("updatestatus",conn.rs.getString("isupdated"));
             
               //Patient_CCC_No ,Facility_Name ,MFL_Code, Date_Collected,County,Sub_County
             jarr.put(jobj);
