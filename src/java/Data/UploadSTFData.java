@@ -138,13 +138,19 @@ else if(cellBatch_No.getCellType()==1){
 
 //        2_______________________Patient_CCC_No__________________________
 XSSFCell cellPatient_CCC_No = rowi.getCell((short) 2);
-System.out.println("___i is__"+i);
-if(cellPatient_CCC_No.getCellType()==0){
+
+if(cellPatient_CCC_No.getCellType()==0)
+{
     //numeric
-    Patient_CCC_No =""+(int)cellPatient_CCC_No.getNumericCellValue();
+    Patient_CCC_No =""+cellPatient_CCC_No.getRawValue();
+    System.out.println(rec_no+" Patient ccc no int : "+Patient_CCC_No);
+    
 }
-else if(cellPatient_CCC_No.getCellType()==1){
+else if(cellPatient_CCC_No.getCellType()==1)
+{
     Patient_CCC_No =cellPatient_CCC_No.getStringCellValue();
+    
+     System.out.println(rec_no+" Patient ccc no string : "+Patient_CCC_No);
 }
 
 
@@ -591,7 +597,8 @@ i++;
         }
         return contentDisp;
     }
-      public String getMFLCode(dbConnweb conn, String facility_name) throws SQLException{
+      public String getMFLCode(dbConnweb conn, String facility_name) throws SQLException 
+      {
           String mfl_code="";
           
        String getmfl_code = "SELECT mfl_code from facility_list WHERE facility_name like ?";
