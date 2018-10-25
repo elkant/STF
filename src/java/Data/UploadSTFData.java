@@ -27,6 +27,7 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import scripts.OSValidator;
 import scripts.updatemfl;
 @MultipartConfig(fileSizeThreshold=1024*1024*20, 	// 20 MB 
                  maxFileSize=1024*1024*50,      	// 50 MB
@@ -82,7 +83,11 @@ public class UploadSTFData extends HttpServlet {
             System.out.println("Failed to load the excel file. Please choose a .xlsx excel file ");
         }
         else {
+            
+            
           full_path=fileSaveDir.getAbsolutePath()+"\\"+fileName;
+          
+          if(OSValidator.isUnix()){ full_path=fileSaveDir.getAbsolutePath()+"/"+fileName;  }
  
  System.out.println("the saved file directory is  :  "+full_path);
 // GET DATA FROM THE EXCEL AND AND OUTPUT IT ON THE CONSOLE..................................
@@ -261,11 +266,12 @@ else if(cellSampleType.getCellType()==1){
 
 //        10_______________________Collection_Date__________________________
 XSSFCell cellCollection_Date = rowi.getCell((short) 10);
-
-Date original_dateC = cellCollection_Date.getDateCellValue();
-if(original_dateC!=null){
-    Collection_Date =targetFormat.format(original_dateC);
+if(cellCollection_Date.getCellType()==1){
+    //numeric
+       Collection_Date =cellCollection_Date.getStringCellValue();
 }
+
+
 
 
 //        11_______________________Received_Status__________________________
@@ -313,12 +319,17 @@ else if(cellPMTCT.getCellType()==1){
 
 //        14_______________________ART_Initiation_Date__________________________
 XSSFCell cellART_Initiation_Date = rowi.getCell((short) 14);
-Date original_dateART = cellART_Initiation_Date.getDateCellValue();
-String art=""+original_dateART;
-System.out.println("art date : "+art+" full date : "+original_dateART);
-if(original_dateART!=null){
-    ART_Initiation_Date =targetFormat.format(original_dateART);
+
+ if(cellART_Initiation_Date.getCellType()==1){
+    ART_Initiation_Date =cellART_Initiation_Date.getStringCellValue();
 }
+
+//Date original_dateART = cellART_Initiation_Date.getDateCellValue();
+//String art=""+original_dateART;
+//System.out.println("art date : "+art+" full date : "+original_dateART);
+//if(original_dateART!=null){
+//    ART_Initiation_Date =targetFormat.format(original_dateART);
+//}
 
 
 
@@ -339,19 +350,29 @@ else if(cellJustification.getCellType()==1){
 
 //        16_______________________Date_of_Receiving__________________________
 XSSFCell cellDate_of_Receiving = rowi.getCell((short) 16);
-Date original_dateR = cellDate_of_Receiving.getDateCellValue();
-if(original_dateR!=null){
-    Date_of_Receiving =targetFormat.format(original_dateR);
+
+ if(cellDate_of_Receiving.getCellType()==1){
+    Date_of_Receiving =cellDate_of_Receiving.getStringCellValue();
 }
+
+//Date original_dateR = cellDate_of_Receiving.getDateCellValue();
+//if(original_dateR!=null){
+//    Date_of_Receiving =targetFormat.format(original_dateR);
+//}
 
 
 
 //        17_______________________Date_of_Testing__________________________
 XSSFCell cellDate_of_Testing = rowi.getCell((short) 17);
-Date original_dateT = cellDate_of_Testing.getDateCellValue();
-if(original_dateT!=null){
-    Date_of_Testing =targetFormat.format(original_dateT);
+
+ if(cellDate_of_Testing.getCellType()==1){
+    Date_of_Testing =cellDate_of_Testing.getStringCellValue();
 }
+
+//Date original_dateT = cellDate_of_Testing.getDateCellValue();
+//if(original_dateT!=null){
+//    Date_of_Testing =targetFormat.format(original_dateT);
+//}
 
 
 
@@ -359,9 +380,13 @@ if(original_dateT!=null){
 XSSFCell cellDate_of_Dispatch = rowi.getCell((short) 18);
 //            cellDate_of_Dispatch.setCellType(Cell.CELL_TYPE_STRING);
 
-Date original_date = cellDate_of_Dispatch.getDateCellValue();
-if(original_date!=null){
-    Date_of_Dispatch =targetFormat.format(original_date); 
+ if(cellDate_of_Dispatch.getCellType()==1){
+    Date_of_Dispatch =cellDate_of_Dispatch.getStringCellValue();
+}
+
+//Date original_date = cellDate_of_Dispatch.getDateCellValue();
+if(Date_of_Dispatch!=null){
+   // Date_of_Dispatch =targetFormat.format(original_date); 
     
     if(!Date_of_Dispatch.equals("")){
         //get yearmonth 2017-04-29
@@ -415,19 +440,28 @@ else if(cellRegimen2.getCellType()==1){
 
 //        22_______________________Date_Collected2__________________________
 XSSFCell cellDate_Collected2 = rowi.getCell((short) 22);
-Date original_dateC2 = cellDate_Collected2.getDateCellValue();
-if(original_dateC2!=null){
-    Date_Collected2 =targetFormat.format(original_dateC2);
+
+ if(cellDate_Collected2.getCellType()==1){
+    Date_Collected2 =cellDate_Collected2.getStringCellValue();
 }
+
+//Date original_dateC2 = cellDate_Collected2.getDateCellValue();
+//if(original_dateC2!=null){
+//    Date_Collected2 =targetFormat.format(original_dateC2);
+//}
 
 
 
 //        23_______________________Date_Tested2__________________________
 XSSFCell cellDate_Tested2 = rowi.getCell((short) 23);
-Date original_dateT2 = cellDate_Tested2.getDateCellValue();
-if(original_dateT2!=null){
-    Date_Tested2 =targetFormat.format(original_dateT2);
+
+ if(cellDate_Tested2.getCellType()==1){
+    Date_Tested2 =cellDate_Tested2.getStringCellValue();
 }
+//Date original_dateT2 = cellDate_Tested2.getDateCellValue();
+//if(original_dateT2!=null){
+//    Date_Tested2 =targetFormat.format(original_dateT2);
+//}
 
 
 //        24_______________________Result2__________________________
@@ -543,6 +577,19 @@ i++;
               }
         }
         
+        try {
+         if(conn.st!=null){conn.st.close();}  
+         if(conn.st1!=null){conn.st1.close();}  
+         if(conn.st_6!=null){conn.st_6.close();}  
+         if(conn.rs!=null){conn.rs.close();}  
+         if(conn.rs1!=null){conn.rs1.close();}  
+         if(conn.rs_6!=null){conn.rs_6.close();}  
+         if(conn.pst1!=null){conn.pst1.close();}  
+         if(conn.conne!=null){conn.conne.close();}  
+         
+        } catch (SQLException ex) {
+                  Logger.getLogger(UploadSTFData.class.getName()).log(Level.SEVERE, null, ex);
+              }
         
         String message="<font color=\"green\">"+added+"</font> New records added successfully. <font color=\"blue\">"+updated+"</font> Records updated." ; 
         session.setAttribute("upload_success", message);  

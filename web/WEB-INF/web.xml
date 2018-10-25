@@ -40,6 +40,14 @@
         <servlet-name>updatestatus</servlet-name>
         <servlet-class>scripts.updatestatus</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>todashboards</servlet-name>
+        <servlet-class>dashboards.todashboards</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>pullSTF</servlet-name>
+        <servlet-class>dashboards.pullSTF</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>showfacils</servlet-name>
         <url-pattern>/showfacils</url-pattern>
@@ -79,6 +87,14 @@
     <servlet-mapping>
         <servlet-name>updatestatus</servlet-name>
         <url-pattern>/updatestatus</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>todashboards</servlet-name>
+        <url-pattern>/todashboards</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>pullSTF</servlet-name>
+        <url-pattern>/pullSTF</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

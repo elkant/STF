@@ -32,7 +32,7 @@ public String filenames,cu,dates,computername,senderofmail;
  public boolean Sendemail (String senderofemail,String ujumbe , String subject, String mailreceiver)throws MessagingException {
      String toAddress=mailreceiver;
         
-        senderofmail="APHIAPLUS STF";
+        senderofmail="AFYA NYOTA STF";
        
         if(!toAddress.equals("")){
         //toAddress+=",";

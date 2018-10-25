@@ -32,7 +32,7 @@ public class showfacils extends HttpServlet {
             
             dbConnweb conn= new dbConnweb();
             
-              conn.st.executeUpdate("SET GLOBAL max_allowed_packet = 209715200");    
+              //conn.st.executeUpdate("SET GLOBAL max_allowed_packet = 209715200");    
              conn.rs= conn.st.executeQuery("SHOW VARIABLES LIKE 'max_allowed_packet' ");    
             if(conn.rs.next()){
                 System.out.println("Max_allowed_connection_"+conn.rs.getString(2));
@@ -58,9 +58,14 @@ public class showfacils extends HttpServlet {
             }
             
             
-            if(conn.rs!=null){conn.rs.close();}
-            if(conn.st!=null){conn.st.close();}
-            if(conn.conne!=null){conn.conne.close();}
+             if(conn.st!=null){conn.st.close();}  
+         if(conn.st1!=null){conn.st1.close();}  
+         if(conn.st_6!=null){conn.st_6.close();}  
+         if(conn.rs!=null){conn.rs.close();}  
+         if(conn.rs1!=null){conn.rs1.close();}  
+         if(conn.rs_6!=null){conn.rs_6.close();}  
+         if(conn.pst1!=null){conn.pst1.close();}  
+         if(conn.conne!=null){conn.conne.close();}  
           // System.out.println(""+jarr); 
             response.setContentType("text/html;charset=UTF-8");
             response.setHeader("Access-Control-Allow-Origin", "*");

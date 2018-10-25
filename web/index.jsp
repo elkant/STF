@@ -29,10 +29,22 @@
 		<![endif]-->
 		<link href="css/styles.css" rel="stylesheet">
                 
-                <style>
+         <style type='text/css'>
 input:focus {
     border-color: red;
+    }
+    .control-group .select2-container {
+  position: relative;
+  z-index: 2;
+  float: left;
+  width: 100%;
+  margin-bottom: 0;
+  display: table;
+  table-layout: fixed;
 }
+
+
+
 </style>
                 
 	</head>
@@ -92,7 +104,7 @@ input:focus {
 
             
             
-          <h5 style="text-align: center;color:blue;">STF version 1.2.3 <label id='totalcccnos'>.</label></h5>
+            <h5 title="updated 1st March 2018" style="text-align: center;color:blue;">STF version 2.0.2 <label id='totalcccnos'>.</label></h5>
 
       
       
@@ -138,11 +150,11 @@ input:focus {
                     <!--tabs-->
                     <div class="panel">
                         <ul class="nav nav-tabs " id="myTab">
-                            <li class="active newdata"><a href="#dataentry" id="newdatabutton" data-toggle="tab">  <i class="glyphicon glyphicon-plus"></i>New Data</a></li>
+                            <li class="active newdata col-xs-4"><a href="#dataentry" id="newdatabutton" data-toggle="tab">  <i class="glyphicon glyphicon-plus"></i>New Data</a></li>
                             <!--<li class="active editdata" style='display:none;' ><a href="#dataentry" id="newdatabutton" data-toggle="tab">  <i class="glyphicon glyphicon-edit"></i> Edit Data</a></li>-->
                             <li><a href="#reports" style="display:none;" id="reportsbutton" data-toggle="tab"> <i class="glyphicon glyphicon-stats"></i> Report</a></li> 
-                            <li><a href="#searchdata" data-toggle="tab"> <i class="glyphicon glyphicon-search"></i> View Data</a></li> 
-                            <li><a href="#cleardata" data-toggle="tab"> <i class="glyphicon glyphicon-search"></i> Clear synced data</a></li> 
+                            <li class='col-xs-4'><a href="#searchdata" data-toggle="tab"> <i class="glyphicon glyphicon-search"></i> View Data</a></li> 
+                            <li class='col-xs-4'><a href="#cleardata" data-toggle="tab"> <i class="glyphicon glyphicon-search"></i> Clear synced data</a></li> 
                            <!-- <li><a href="#export" data-toggle="tab"> <i class="glyphicon glyphicon-cloud-upload"></i> Data Export</a></li>-->
                         </ul>
                         <div class="tab-content">
@@ -167,7 +179,7 @@ input:focus {
                                                 Calendar cal= Calendar.getInstance();
                                                 int curyear=cal.get(Calendar.YEAR);
                                                 
-                                            for(int a=curyear-1;a<=curyear;a++){
+                                            for(int a=2016;a<=curyear;a++){
                                              out.println("<option value='"+a+"'>"+a+"</option>");
                                                 %>
                                             
@@ -323,7 +335,7 @@ input:focus {
                                     <!----------------------------->
                                     <tr class="ficha"><td>
 
-                                        <label class="col-xs-6">Second sample collection date</label>
+                                        <label class="col-xs-6">Repeat VL collection date</label>
 
                                         <div class="controls col-xs-6">
                                             <input type="text"  name ="secondsampledate" id="secondsampledate" data-date-end-date="0d" autocomplete="off" class="form-control dates" readonly placeholder="e.g yyyy-mm-dd">
@@ -341,7 +353,7 @@ input:focus {
                                     <!----------------------------->
                             <tr class="ficha"><td>
 
-                                        <label class="col-xs-6">Reasons 2nd Sample Not Collected</label>
+                                        <label class="col-xs-6">Reasons Repeat VL Not Collected</label>
 
                                         <div class="controls col-xs-6">
                                             <select onchange='reasonnoteligible();' style=""   name="noteligible" id="noteligible" class="form-control col-xs-6" >
@@ -363,7 +375,7 @@ input:focus {
                                   <!----------------------------->
                                     <tr class="ficha"><td>
 <div id='otherdiv' style='display:none;'>
-                                        <label class="col-xs-6"><font color="red"><b>*</b></font>Other Reasons 2nd Sample not Collected</label>
+                                        <label class="col-xs-6"><font color="red"><b>*</b></font>Other Reasons Repeat VL Sample not Collected</label>
 
                                         <div class="controls col-xs-6">
                                             <input  style=""   name="noteligibleother" id="noteligibleother" class="form-control col-xs-6" >
@@ -382,7 +394,7 @@ input:focus {
                                    <!----------------------------->
                                 <tr class="ficha"><td>
 
-                                        <label class="col-xs-6">Results of the second sample</label>
+                                        <label class="col-xs-6">Results of the Repeat VL</label>
 
                                         <div class="controls col-xs-6">
                                             <select  style=""   name="secondsampleresults" id="secondsampleresults" class="form-control col-xs-6" >
@@ -649,7 +661,7 @@ input:focus {
 
 <!-- /Main -->
 
-<footer class="text-center"> &copy; AphiaPlus USAID </footer>
+<footer class="text-center"> &copy; Afya Nyota Ya Bonde | USAID </footer>
 
 <div class="modal" id="addWidgetModal">
     <div class="modal-dialog">
@@ -1019,8 +1031,8 @@ input:focus {
                     
                  
     
-   var hostname="http://104.45.29.195";
-   // var hostname="http://localhost";
+   var hostname="http://hsdsacluster2.fhi360.org";
+ //var hostname="http://localhost";
 
      // todayHighlight: true, daysOfWeekDisabled: "0,6",clearBtn: true, autoclose: true,format: "yyyy-mm-dd",
                  </script>
@@ -1106,7 +1118,7 @@ input:focus {
                         $("#exportresponse").html("");
                      for(var i=0;i<data.length;i++){
                          
-if((data[i].pmtct===1 || data[i].art===1) &&data[i].isactive==='Yes'  ){
+if((data[i].pmtct===1 || data[i].art===1) && data[i].isactive==='Yes'  ){
     //think of how to get the selected value.
     
                   facilities+="<option value='"+data[i].mflcode+"_"+data[i].facility_name+"'>"+data[i].facility_name+"</option>"; 
@@ -1200,7 +1212,7 @@ function addaccount(isauthorized) {
                     },
                 
                error: function(XMLHttpRequest, textStatus, errorThrown) {
-        //alert('offline');
+       // alert(errorThrown);
 $("#useraccountvalidation").html("No internet connection. Connect to internet and try again."); 
     }
             
@@ -1269,7 +1281,7 @@ function adduser(username,hosi,supervisormail) {
    function showuser(aphiaplus,updateduser,updatedfacil,supervisormail){
 
 
-	var counties=["Baringo","Kajiado","Laikipia","Nakuru","Narok"];
+	var counties=["Baringo","Kajiado","Laikipia","Nakuru","Narok","Samburu","Turkana"];
 	userdb.get("aphiaplus").then(function (doc) {
             //
             if(updateduser!==''){
@@ -2764,7 +2776,7 @@ function importdata(){
              } 
             
         
-            //url:'http://104.45.29.195:8080/aphiaplus_moi/importweeklydata',
+            
             
              $.ajax({
                          url:hostname+':8080/STF/exportdata',                            

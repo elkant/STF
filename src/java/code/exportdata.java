@@ -27,7 +27,7 @@ public class exportdata extends HttpServlet {
 
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, MessagingException, SQLException {
           String insert="";
           String myresponse="";
           String cccnumber=null;
@@ -119,7 +119,7 @@ String usermail="";
 
 
            
-            conn.st.executeUpdate("SET GLOBAL max_allowed_packet = 209715200");
+           // conn.st.executeUpdate("SET GLOBAL max_allowed_packet = 209715200");
             conn.rs = conn.st.executeQuery("SHOW VARIABLES LIKE 'max_allowed_packet' ");
             
             if (conn.rs.next()) {
@@ -184,17 +184,11 @@ String usermail="";
                             //if this si a different export , send email notification
                             if(!exportid.equals("")){
                                 
-                             if(isnewRecords(exportid, user,conn)){
-                             
-                                 try {
-                                     //send email
-                                     sm.Sendemail("STF IMPORT","Hi ,  \nThis is to notify you that New STFs data from user "+user.split(",")[0]+" has been updated succesfully. \n \n For more details, generate output reports http://104.45.29.195:8080/STF/. \n \nPlease do not reply to this mail, It is system generated. ", "Updated STF Data"," EKaunda@fhi360.org,Pnjoka@fhi360.org,"+usermail);
-                                 } catch (MessagingException ex) {
-                                     Logger.getLogger(exportdata.class.getName()).log(Level.SEVERE, null, ex);
-                                 }
-                                
+                             //if(isnewRecords(exportid, user)){
+                                 //send email
+                                // sm.Sendemail("STF IMPORT","Hi ,  \nThis is to notify you that New STFs data from user "+user.split(",")[0]+" has been updated succesfully. \n \n For more details, generate output reports http://hsdsacluster2.fhi360.org:8080/STF/. \n \nPlease do not reply to this mail, It is system generated. ", "Updated STF Data"," EKaunda@fhi360.org,"+usermail);
                                  
-                             }
+                             //}
                             }
                               
                             
@@ -258,19 +252,13 @@ String usermail="";
                             txtresponse="<font color='green'> Data for "+cccnumber+" added succesfully for year "+year+" and month "+month+" </font>";
                            //isnewRecords(String id, String emails, dbConnweb conn)
                             //add team leaders variable at this point 
-                            //sm.Sendemail("STF IMPORT"," Hi, \nThis is to notify you that new data for patient whose CCC number is "+cccnumber+" has been added succesfully by   user "+user+" for Year "+year+" and month "+month+". \n \n Please do not reply to this mail. It is system generated ", "STF data export for "+cccnumber+" & Year "+year+" , Month "+month,"EKaunda@fhi360.org,CKomen@fhi360.org"+usermail);
+                            //sm.Sendemail("STF IMPORT"," Hi, \nThis is to notify you that new data for patient whose CCC number is "+cccnumber+" has been added succesfully by   user "+user.split(",")[0]+" for Year "+year+" and month "+month+". \n \n Please do not reply to this mail. It is system generated ", "STF data export for "+cccnumber+" & Year "+year+" , Month "+month,"EKaunda@fhi360.org"+usermail);
                                                        
                           if(!exportid.equals("")){
                                 
-                             if(isnewRecords(exportid, user,conn)){
-                             
-                                 try {
-                                     //send email
-                                     sm.Sendemail("STF IMPORT","Hi ,  \nThis is to notify you that New STFs data from user "+user.split(",")[0]+" has been exported succesfully. \n \n For more details, generate output reports here http://104.45.29.195:8080/STF/. \n \nPlease do not reply to this mail, It is system generated. ", "New STF Data"," EKaunda@fhi360.org,PNjoka@fhi360.org,"+usermail);
-                                 } catch (MessagingException ex) {
-                                     Logger.getLogger(exportdata.class.getName()).log(Level.SEVERE, null, ex);
-                                 }
-                                
+                             if(isnewRecords(exportid, user)){
+                                 //send email
+                                  sm.Sendemail("STF IMPORT","Hi ,  \nThis is to notify you that New STFs data from user "+user.split(",")[0]+" has been exported succesfully. \n \n For more details, generate output reports here http://hsdsacluster2.fhi360.org:8080/STF/. \n \nPlease do not reply to this mail, It is system generated. ", "New STF Data"," EKaunda@fhi360.org,"+usermail);
                                  
                              }
                             }
@@ -287,43 +275,61 @@ String usermail="";
    }
            
    
-         if(conn.st!=null){conn.st.close();}  
-         if(conn.rs!=null){conn.rs.close();}  
-         if(conn.pst1!=null){conn.pst1.close();}  
-         if(conn.conne!=null){conn.conne.close();}  
+           
         
    
         } catch (SQLException ex) {
             Logger.getLogger(exportdata.class.getName()).log(Level.SEVERE, null, ex);
              txtresponse="<font color='red'>Data for "+cccnumber+" NOT inserted succesfully for dates "+startdate+" to "+enddate+".  "+ex+" </font>";
+              // sm.Sendemail("STF IMPORT",ex.toString()+ "___ \n Username: "+user+" Facility name: \n "+facilityname+" \n "+myresponse, "MYSQL IMPORTING ERROR ","EKaunda@fhi360.org");
         //send an email at this point of the exception
-            
-            try {
-                sm.Sendemail("STF IMPORT",ex.toString()+ "___ \n Username: "+user+" Facility name: \n "+facilityname+" \n "+myresponse, "MYSQL IMPORTING ERROR ","EKaunda@fhi360.org");
-                } catch (MessagingException ex1) {
-                Logger.getLogger(exportdata.class.getName()).log(Level.SEVERE, null, ex1);
-            }
             
         }
         
         
       out.println(txtresponse);   
         
-        
+       
+      
+      if(conn.st!=null){conn.st.close();}  
+         if(conn.st1!=null){conn.st1.close();}  
+         if(conn.st_6!=null){conn.st_6.close();}  
+         if(conn.rs!=null){conn.rs.close();}  
+         if(conn.rs1!=null){conn.rs1.close();}  
+         if(conn.rs_6!=null){conn.rs_6.close();}  
+         if(conn.pst1!=null){conn.pst1.close();}  
+         if(conn.conne!=null){conn.conne.close();}
+      
     }
 
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            try {
+                processRequest(request, response);
+            } catch (SQLException ex) {
+                Logger.getLogger(exportdata.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (MessagingException ex) {
+            Logger.getLogger(exportdata.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            try {
+                processRequest(request, response);
+            } catch (SQLException ex) {
+                Logger.getLogger(exportdata.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (MessagingException ex) {
+            Logger.getLogger(exportdata.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -337,26 +343,37 @@ String usermail="";
     }// </editor-fold>
 
     
-    public boolean isnewRecords(String id, String emails, dbConnweb conn){
+    public boolean isnewRecords(String id, String emails){
          boolean isrecordnew=false;
         try {
            
+            dbConnweb conn= new dbConnweb();
             
             String check="select id from exporthistory where id='"+id+"' ";
+            System.out.println(""+check);
             conn.rs_6=conn.st_6.executeQuery(check);
             
             if(conn.rs_6.next()){
-             isrecordnew=false;   
+             isrecordnew=false; 
+                System.out.println(" Kuna record ");
             }
             else {
+                 System.out.println(" hakuna record ");
             // insert
                 isrecordnew=true;
                 
-                conn.st_5.executeUpdate("insert into exporthistory (id,users) value ('"+id+"','"+emails+"')");
+                conn.st_5.executeUpdate("replace into exporthistory (id,users) value ('"+id+"','"+emails+"')");
             }
             
             
-            
+            if(conn.st!=null){conn.st.close();}  
+         if(conn.st_5!=null){conn.st_5.close();}  
+         if(conn.st_6!=null){conn.st_6.close();}  
+         if(conn.rs!=null){conn.rs.close();}  
+         if(conn.rs1!=null){conn.rs1.close();}  
+         if(conn.rs_6!=null){conn.rs_6.close();}  
+         if(conn.pst1!=null){conn.pst1.close();}  
+         if(conn.conne!=null){conn.conne.close();}
           
         } catch (SQLException ex) {
             Logger.getLogger(exportdata.class.getName()).log(Level.SEVERE, null, ex);

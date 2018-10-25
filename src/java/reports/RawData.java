@@ -230,10 +230,14 @@ rw.setHeightInPoints(26);
         shet.createFreezePane(6, 4);
 
         
-        if(conn.rs!=null){conn.rs.close();}
-        if(conn.rs1!=null){conn.rs1.close();}
-        if(conn.st!=null){conn.st.close();}
-        if(conn.st1!=null){conn.st1.close();}
+         if(conn.st!=null){conn.st.close();}  
+         if(conn.st1!=null){conn.st1.close();}  
+         if(conn.st_6!=null){conn.st_6.close();}  
+         if(conn.rs!=null){conn.rs.close();}  
+         if(conn.rs1!=null){conn.rs1.close();}  
+         if(conn.rs_6!=null){conn.rs_6.close();}  
+         if(conn.pst1!=null){conn.pst1.close();}  
+         if(conn.conne!=null){conn.conne.close();}  
         
         
         IdGenerator IG = new IdGenerator();
