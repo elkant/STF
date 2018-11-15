@@ -48,6 +48,10 @@
         <servlet-name>pullSTF</servlet-name>
         <servlet-class>dashboards.pullSTF</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>dbConnDash</servlet-name>
+        <servlet-class>database.dbConnDash</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>showfacils</servlet-name>
         <url-pattern>/showfacils</url-pattern>
@@ -95,6 +99,10 @@
     <servlet-mapping>
         <servlet-name>pullSTF</servlet-name>
         <url-pattern>/pullSTF</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dbConnDash</servlet-name>
+        <url-pattern>/dbConnDash</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

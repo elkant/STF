@@ -37,8 +37,10 @@ public final class dbConnweb {
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
          //conne = DriverManager.getConnection("jdbc:mysql://localhost:3306/stf?maxAllowedPacket=1000000000","root", "P@ss4M&E!Fhiimpact!");
-         //conne = DriverManager.getConnection("jdbc:mysql://104.45.29.195:3306/aphiaplus_moi","root", "admin");
-        conne = DriverManager.getConnection("jdbc:mysql://localhost:3306/stf?maxAllowedPacket=1000000000","root", "70450289");
+      conne = DriverManager.getConnection("jdbc:mysql://kenmysqlserver1.mysql.database.azure.com:3306/stf?verifyServerCertificate=false&useSSL=true&requireSSL=true","websqladmkn@kenmysqlserver1", "P@$$w9rd4$q12Use1nK#K");
+         
+         //conne = DriverManager.getConnection("jdbc:mysql://104.45.29.195:3306/stf","aphiaplus", "Pass4M&E!");
+         //conne = DriverManager.getConnection("jdbc:mysql://localhost:3306/stf?maxAllowedPacket=1000000000","root", "70450289");
             
             //if the saved host name is less than 2 letters long, then thats not a genuine host name
 
@@ -49,19 +51,19 @@ public final class dbConnweb {
 
                      
 
-                st0 = conne.createStatement();
-                st = conne.createStatement();
-                st1 = conne.createStatement();
-                st2 = conne.createStatement();
-                st3 = conne.createStatement();
-                st4 = conne.createStatement();
-                st_1 = conne.createStatement();
-                st_2 = conne.createStatement();
-                st_3 = conne.createStatement();
-                st_4 = conne.createStatement();
-                st_5 = conne.createStatement();
-                st_6 = conne.createStatement();
-                anc_scheduling_st = conne.createStatement();
+               st0 = conne.createStatement();
+               st = conne.createStatement();
+               st1 = conne.createStatement();
+               st2 = conne.createStatement();
+               st3 = conne.createStatement();
+               st4 = conne.createStatement();
+               st_1 = conne.createStatement();
+               st_2 = conne.createStatement();
+               st_3 = conne.createStatement();
+               st_4 = conne.createStatement();
+               st_5 = conne.createStatement();
+               st_6 = conne.createStatement();
+               anc_scheduling_st = conne.createStatement();
 
 
 
