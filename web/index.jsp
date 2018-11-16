@@ -9,8 +9,8 @@
 
 
 <!DOCTYPE html>
-<!--<html  >-->
-<html  manifest="stfv1.appcache">
+<html>
+<!--<html  manifest="stfv1.appcache">-->
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<meta charset="utf-8">
@@ -104,7 +104,7 @@ input:focus {
 
             
             
-            <h5 title="updated 1st March 2018" style="text-align: center;color:blue;">STF version 2.0.3 <label id='totalcccnos'>.</label></h5>
+            <h5 title="updated 15th Nov 2018" style="text-align: center;color:blue;">STF version 3.0.0 <label id='totalcccnos'>.</label></h5>
 
       
       
@@ -707,7 +707,7 @@ input:focus {
                 <label style="color:red;" id="useraccountvalidation"></label>
             </div>
             <div class="modal-body">
-                <form action="#" id="userform" method="post">
+                <form action="#" class="userform" method="post">
                  <div class="control-group">
                                     <label><font color="red"><b>*</b></font>  Enter STF access code</label>
                                     <div class="controls">
@@ -799,7 +799,7 @@ input:focus {
                 <label style="color:red;" id="uservalidation"></label>
             </div>
             <div class="modal-body">
-                <form action="#" id="userform" method="post">
+                <form action="#" class="userform" method="post">
                  <div class="control-group">
                                     <label><font color="red"><b>*</b></font>  Your Email</label>
                                     <div class="controls">
@@ -1031,7 +1031,8 @@ input:focus {
                     
                  
     
-   var hostname="http://hsdsacluster2.fhi360.org";
+   var hostname="";
+   //var hostname="https://hsdsacluster2.fhi360.org:8443/STF/";
  //var hostname="http://localhost";
 
      // todayHighlight: true, daysOfWeekDisabled: "0,6",clearBtn: true, autoclose: true,format: "yyyy-mm-dd",
@@ -1110,7 +1111,7 @@ input:focus {
         
               $.ajax({
                          url:'sites.json',                            
-                    type:'post',  
+                    type:'get',  
                     dataType: 'json',  
                     success: function(data) {
                         
@@ -1188,7 +1189,7 @@ function addaccount(isauthorized) {
      
      //if ok is returned , then save account. else .. show error
       $.ajax({
-                         url:hostname+':8080/STF/validateAccess?kc='+enteredcode,                            
+                         url:hostname+'validateAccess?kc='+enteredcode,                            
                     type:'post',  
                     dataType: 'html',  
                     success: function(data) {
@@ -1530,8 +1531,8 @@ if(facilis!==selectfacils && selectfacils!=='' && selectfacils!=='null'){
     else {
    
               $.ajax({
-                    url:hostname+':8080/STF/getvldata?facility='+facilis,                            
-                    type:'post',  
+                    url:hostname+'getvldata?facility='+facilis,                            
+                    type:'get',  
                     dataType: 'json',  
                     success: function(data) {
                    
@@ -2779,7 +2780,7 @@ function importdata(){
             
             
              $.ajax({
-                         url:hostname+':8080/STF/exportdata',                            
+                         url:hostname+'exportdata',                            
                     type:'post', 
 data:{id:dat.doc._id,
     datecollected:dat.doc.datecollected,
@@ -2922,7 +2923,7 @@ function importdata_logitudinal(exportid){
             //url:'http://104.45.29.195:8080/aphiaplus_moi/importweeklydata',
             
              $.ajax({
-                         url:hostname+':8080/STF/exportdata',                            
+                         url:hostname+'exportdata',                            
                     type:'post', 
 data:{id:dat.doc._id,
     datecollected:dat.doc.datecollected,
@@ -3398,7 +3399,7 @@ return false;
 
 //Codes to prevent default form submission
 
-$("#userform").submit(function(e){
+$(".userform").submit(function(e){
     return false;
 });
 
@@ -3523,7 +3524,7 @@ function getreport(){
                
                 //?startdate=" + startdate + "&enddate=" + enddate + "&cbos=" + cbos
              
-                var ur=hostname+":8080/STF/RawData?startdate="+startdate+"&enddate="+enddate+"&rpt_county="+cnty+"&rpt_subcounty="+rptsubcounty;
+                var ur=hostname+"RawData?startdate="+startdate+"&enddate="+enddate+"&rpt_county="+cnty+"&rpt_subcounty="+rptsubcounty;
                 console.log(ur);
                 $.fileDownload(ur).done( function () {
                    // alert("done");
@@ -3940,8 +3941,8 @@ function reportingRates( mflcodes){
     
     
      $.ajax({
-                    url:hostname+":8080/STF/reportingrates?rpt_facils="+mflcodes,                            
-                    type:'post',  
+                    url:hostname+"reportingrates?rpt_facils="+mflcodes,                            
+                    type:'get',  
                     dataType: 'json',  
                     success: function(data) {
                    
@@ -3966,6 +3967,15 @@ function reportingRates( mflcodes){
 }
 
 
+</script>
+
+<script>
+if('serviceWorker' in navigator) 
+{
+  navigator.serviceWorker
+           .register('serviceworker.js')
+           .then(function() { console.log("Service Worker Registered"); });
+}
 </script>
 
 	</body>
