@@ -1,0 +1,42 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Mar 22, 2021, 4:15:32 PM
+    Author     : EKaunda
+*/
+
+.validation {
+    color:red;
+    
+    
+}
+input:focus {
+    border-color: red;
+    }
+    .control-group .select2-container {
+  position: relative;
+  z-index: 2;
+  float: left;
+  width: 100%;
+  margin-bottom: 0;
+  display: table;
+  table-layout: fixed;
+}
+
+
+@media screen and (min-width: 600px) and (max-width: 1199px)  {
+  #stfdataform {
+    margin-left:20%;
+    margin-right:20%;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  #stfdataform {
+    margin-left:30%;
+    margin-right:30%;
+  }
+}

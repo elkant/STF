@@ -1,12 +1,3 @@
-<%-- 
-    Document   : index
-    Created on : Mar 17, 2016, 3:17:19 PM
-    Author     : Emmanuel E
---%>
-
-<%@page import="java.util.Calendar"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-
 
 <!DOCTYPE html>
 <html>
@@ -14,7 +5,7 @@
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<meta charset="utf-8">
-		<title>STF</title>
+		<title>STF Reports</title>
 		<meta name="generator" content="Bootply" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
                   <link href="css/dataTables.bootstrap.min.css" rel="stylesheet">
@@ -82,10 +73,12 @@ input:focus {
                         </a></li>
                         <li>
                   <a  title="" id='loginbtn' data-toggle="modal" href="#accesscodemodal"><i class="glyphicon glyphicon-log-in"></i>login</a></li>
+                        
+                  <li><a  title=""   href="" onclick='clearsws();'<i class="glyphicon glyphicon-log-in"></i>Clear Cache</a></li>
                          <li>
                   <a  title="" id='summaryrptbtn' data-toggle="modal" href="#summarybtn"><i class="glyphicon glyphicon-stats"></i>Reporting rate</a></li>
                         <li><a  title=""  data-toggle="modal" href="#datasavedmodal">.</a></li>
-                              <li><a href="#" style="display:none;" onclick="closeapp();"><i class="glyphicon glyphicon-lock"></i> Exit</a></li>
+                        <li><a href="#" style="display:none;" onclick="closeapp();"><i class="glyphicon glyphicon-lock"></i> Exit</a></li>
             </ul>
         </div>
         
@@ -104,7 +97,7 @@ input:focus {
 
             
             
-            <h5 title="updated 15th Nov 2018" style="text-align: center;color:blue;">STF version 3.0.0 <label id='totalcccnos'>.</label></h5>
+            <h5 title="updated 11th Jan 2018" style="text-align: center;color:blue;">STF Reports<label id='totalcccnos'>.</label></h5>
 
       
       
@@ -118,10 +111,7 @@ input:focus {
                   
 
                     <div class="btn-group btn-group-justified">
-                        <a href="#" id='refreshpage' class="btn btn-success col-sm-3">
-                            <i class="glyphicon glyphicon-refresh"></i>
-                            <br> Refresh
-                        </a>
+                       
                         
                          
                             
@@ -129,6 +119,7 @@ input:focus {
                                 <i class="glyphicon glyphicon-cloud-upload"></i>
                                 <br/>Export Data 
                                 <span id="unexportedno" style="color:yellow;">(0 records )</span>
+                                 <input type="hidden"  name ="unexported" id="unexported"  />
                             </a>
                             
                         
@@ -136,9 +127,9 @@ input:focus {
                             <i class="glyphicon glyphicon-cog"></i>
                             <br> Settings
                         </a>-->
-                     <a class="btn btn-success col-sm-3" title="Excel report" data-toggle="modal" href="#excelreport">
-                            <i class="glyphicon glyphicon-stats"></i>
-                            <br> Excel Report
+                     <a class="btn btn-success col-sm-3" title="Excel report"  href="index.html">
+                            <i class="glyphicon glyphicon-paperclip"></i>
+                            <br> Data Entry Page
                         </a> 
                     </div>
 
@@ -152,9 +143,9 @@ input:focus {
                         <ul class="nav nav-tabs " id="myTab">
                             <li class="active newdata col-xs-4"><a href="#dataentry" id="newdatabutton" data-toggle="tab">  <i class="glyphicon glyphicon-plus"></i>New Data</a></li>
                             <!--<li class="active editdata" style='display:none;' ><a href="#dataentry" id="newdatabutton" data-toggle="tab">  <i class="glyphicon glyphicon-edit"></i> Edit Data</a></li>-->
-                            <li><a href="#reports" style="display:none;" id="reportsbutton" data-toggle="tab"> <i class="glyphicon glyphicon-stats"></i> Report</a></li> 
-                            <li class='col-xs-4'><a href="#searchdata" data-toggle="tab"> <i class="glyphicon glyphicon-search"></i> View Data</a></li> 
-                            <li class='col-xs-4'><a href="#cleardata" data-toggle="tab"> <i class="glyphicon glyphicon-search"></i> Clear synced data</a></li> 
+                           
+                           
+                          
                            <!-- <li><a href="#export" data-toggle="tab"> <i class="glyphicon glyphicon-cloud-upload"></i> Data Export</a></li>-->
                         </ul>
                         <div class="tab-content">
@@ -165,414 +156,95 @@ input:focus {
                     <div class="panel panel-default" style='margin:-18px;'>
                        
                         <div class="panel-body" style="width:100%;">
-                            <form class="form form-vertical" action="#" method="post" style='margin:-12px;' id="weeklydataform">
-                                <table class='table table-hover table-bordered'  style="margin-left:  px;" >
-                                <tr><th style="text-align:center"><b>Enter Outcome Data</b></th></tr>
-                                
-                                <tr>
-                                <td><label class="col-xs-6"><font color="red"><b>*</b></font> Dispatch Year </label>
-                                    <div class="controls col-xs-6">
-                                        <select onchange="getmonth();setvldata();" title="Year when the stfs were dispatched" name="year" id="year" class="form-control col-xs-6" style="" >
-                                            <option value='' >Choose year</option>
-                                            <%
-                                                
-                                                Calendar cal= Calendar.getInstance();
-                                                int curyear=cal.get(Calendar.YEAR);
-                                                
-                                            for(int a=2016;a<=curyear;a++){
-                                             out.println("<option value='"+a+"'>"+a+"</option>");
-                                                %>
-                                            
-                                            
-                                            <%
-                                            }
-                                            
-                                            %>
-                                            
-                                        </select>
-                                     
+
+                <h4 class='btn-lg btn-warning' style='text-align: center;'><b>Generate Excel Report</b></h4>
+            
+                <form  id="excelreportsfom" method="post">
+                                <div class="control-group col-lg-12">
+                                    <label class="col-lg-6"><font color="red"><b>*</b></font>Report Start Date</label>
+                                    <div class="controls col-lg-6">
+                                       <input type="text"  name ="startdaterpt" id="startdaterpt"  class="form-control dates" readonly placeholder="e.g yyyy-mm-dd">
                                     </div>
-                                    </td>
-                                    
-                                    </tr>
-                                    
-                                    <tr>
-                                    <td>
-                                    <!----------------------------->
-                                    
-                                    <label class="col-xs-6"><font color="red"><b>*</b></font> Dispatch Month </label>
-                                    
-                                    <div class="controls col-xs-6">
-                                       <select onchange='setvldata();' style="" title="Month when the stfs were dispatched"   name="month" id="month" class="form-control col-xs-6" >
-                                            <option value=''>Choose  month</option>
-                                            <option value="01">January</option>
-                                            <option value="02">February</option>
-                                            <option value="03">March</option>
-                                            <option value="04">April</option>
-                                            <option value="05">May</option>
-                                            <option value="06">June</option>
-                                            <option value="07">July</option>
-                                            <option value="08">August</option>
-                                            <option value="09">September</option>
-                                            <option value="10">October</option>
-                                            <option value="11">November</option>
-                                            <option value="12">December</option>
+                                </div> 
+                    
+                    
+                  <div class="control-group col-lg-12">
+                                    <label class="col-lg-6"><font color="red"><b>*</b></font>Report End Date</label>
+                                    <div class="controls col-lg-6">
+                                       <input type="text"  name ="enddaterpt" id="enddaterpt"  class="form-control dates" readonly placeholder="e.g yyyy-mm-dd">
+                                    </div>
+                                </div> 
+                    
+                      
+                    
+                                <div class="control-group col-lg-12" >
+                                    <label class="col-lg-6">County (optional)</label>
+                                    <div class="controls col-lg-6">
+                                        <select  name="rpt_county" id="rpt_county" style="width:100%;" onchange="loadsubcounty();" class="form-control">
+                                            <option value="">Select County (optional)</option>
+                                             <option value="Baringo">Baringo</option>
+                                             <option value="Kajiado">Kajiado</option>
+                                             <option value="Laikipia">Laikipia</option>
+                                             <option value="Nakuru">Nakuru</option>
+                                             <!--<option value="Narok">Narok</option>-->                                           
+                                             <option value="Samburu">Samburu</option>                                           
+                                             <!--<option value="Turkana">Turkana</option>-->                                           
                                            
                                         </select>
-                                        <input type="hidden"  name ="rowid" id="rowid"  />
                                     </div>
-                                    
-                                    </td>
-                                    
-                                </tr>
-                                 
-                                        
-
-                                <!------INDICATORS----->
-                                 <!----------------------------------------------------------------------------------------->
-                                                                 
-                                <tr>
-                                    <td>
-                                        <!----------------------------->
-
-                                        <label class="col-xs-12"><font color="red"><b>*</b></font> CCC NO </label>
-                                      </td>
-
-                                </tr><tr><td>
-                                        <div class="controls col-xs-12">
-                                            <select onchange='' style=""   name="cccno" id="cccno" class="form-control col-xs-6" >
-                                                <option value=''>Select year and month</option>                                           
-
-                                            </select>
-                                            
-                                        </div>
-
-                                    </td>
-
-                                </tr>
-                                
-                                <!----------------------------------------------------------------------------------------->
-                                  
-                                   
-                                          <!----------------------------------------------------------------------------------------->
-                                                                 
-                                <tr>
-                                    <td>
-                                        <!----------------------------->
-
-                                        <label class="col-xs-6"><font color="red"><b>*</b></font>Sample type </label>
-
-                                        <div class="controls col-xs-6">
-                                            <select onchange='fichua();' style="" required="true"   name="sampletype" id="sampletype" class="form-control col-xs-6" >
-                                                <option value=''>Choose  sample type</option>                                           
-                                                <option value='Routine ART Monitoring'>Routine ART Monitoring</option>                                           
-                                                <option value='Baseline infant'>Baseline infant</option>                                           
-                                                <option value='Baseline PMTCT'>Baseline PMTCT</option>                                           
-                                                <option value='Baseline at diagnosis'>Baseline at diagnosis</option>                                    
-                                                <option value='Clinical failure'>Clinical failure</option>                                    
-                                                <option value='Repeat after 3 month'>Repeat after 3 month</option>                                    
-                                                <option value='Repeat after 1 month'>Repeat after 1 month</option>                                    
-
-
-
-                                            </select>
-                                            
-                                        </div>
-
-                                    </td>
-
-                                </tr>
-                                
-                                <!----------------------------------------------------------------------------------------->
-                                
-                                         
-                             
-                                
-                                    <!----------------------------->
-                                    <tr class="ficha"><td>
-
-                                        <label class="col-xs-6">Patient contacted</label>
-
-                                        <div class="controls col-xs-6">
-                                            <select  style=""   name="patientcontacted" id="patientcontacted" class="form-control col-xs-6" >
-                                                <option value=''>Patient contacted</option>                                           
-                                                <option value='Yes'>Yes</option>                                           
-                                                <option value='NO'>No</option>                                     
-
-                                            </select>
-                                            
-                                        </div>
-
-                                    </td>
-
-                                </tr>
-                                
-                                <!----------------------------------------------------------------------------------------->
-                                
-                                    <!----------------------------->
-                                    <tr class="ficha"><td>
-
-                                        <label class="col-xs-6">Adherence Sessions</label>
-
-                                        <div class="controls col-xs-6">
-                                            <select  style=""   name="adherencemonths" id="adherencemonths" class="form-control col-xs-6" >
-                                                <option value=''>choose months</option>                                           
-                                                <option value='0'>0 (Zero)</option>                                           
-                                                <option value='1'>1 (One)</option>                                     
-                                                <option value='2'>2 (Two)</option>                                     
-                                                <option value='3'>3 (Three)</option>                                     
-
-                                            </select>
-                                            
-                                        </div>
-
-                                    </td>
-
-                                </tr>
-                                
-                                <!----------------------------------------------------------------------------------------->
-                                
-                                    <!----------------------------->
-                                    <tr class="ficha"><td>
-
-                                        <label class="col-xs-6">Repeat VL collection date</label>
-
-                                        <div class="controls col-xs-6">
-                                            <input type="text"  name ="secondsampledate" id="secondsampledate" data-date-end-date="0d" autocomplete="off" class="form-control dates" readonly placeholder="e.g yyyy-mm-dd">
-                                            
-                                        </div>
-
-                                    </td>
-
-                                </tr>
-                                
-                                <!----------------------------------------------------------------------------------------->
-                                
-                                
-                                
-                                    <!----------------------------->
-                            <tr class="ficha"><td>
-
-                                        <label class="col-xs-6">Reasons Repeat VL Not Collected</label>
-
-                                        <div class="controls col-xs-6">
-                                            <select onchange='reasonnoteligible();' style=""   name="noteligible" id="noteligible" class="form-control col-xs-6" >
-                                                <option value=''>choose reason</option>                                           
-                                                <option value='sample was baseline'>sample was baseline</option>                                           
-                                                <option value='sample was a repeat, confirmation or failure'>sample was a repeat, confirmation or failure</option>                                           
-                                                <option value='Other'>Other</option>                                     
-
-                                            </select>
-                                            
-                                        </div>
-
-                                    </td>
-
-                                </tr>
-                                
-                                <!----------------------------------------------------------------------------------------->
-                                
-                                  <!----------------------------->
-                                    <tr class="ficha"><td>
-<div id='otherdiv' style='display:none;'>
-                                        <label class="col-xs-6"><font color="red"><b>*</b></font>Other Reasons Repeat VL Sample not Collected</label>
-
-                                        <div class="controls col-xs-6">
-                                            <input  style=""   name="noteligibleother" id="noteligibleother" class="form-control col-xs-6" >
-                                                                                    
-
-                                         
-                                            
-                                        </div>
-</div>
-                                    </td>
-
-                                </tr>
-                                
-                                <!----------------------------------------------------------------------------------------->
-                                
-                                   <!----------------------------->
-                                <tr class="ficha"><td>
-
-                                        <label class="col-xs-6">Results of the Repeat VL</label>
-
-                                        <div class="controls col-xs-6">
-                                            <select  style=""   name="secondsampleresults" id="secondsampleresults" class="form-control col-xs-6" >
-                                                <option value=''>choose result</option>   
-                                                <option value='>1000'> >1000</option>                                           
-                                                <option value='<1000'> <1000</option>                                           
-                                                <option value='Awaiting results'>Awaiting results</option>                                           
-                                                <option value='Sample Rejected'>Sample Rejected</option>                                          
-                                                    
-                                                  </select>                                            
-                                        </div>
-
-                                    </td>
-
-                                </tr>
-                                
-                                
-                                   <!----------------------------->
-                               <tr class="ficha"><td>
-
-                                        <label class="col-xs-6">Action taken</label>
-
-                                        <div class="controls col-xs-6">
-                                            <select  style="" onchange="ficha1();ficha3();"  name="actiontaken" id="actiontaken" class="form-control col-xs-6" >
-                                                <option value=''>choose action</option> 
-                                                <option value='Retain Regimen'>Retain Regimen</option>                                           
-                                                <option value='Single drug switch'>Single drug switch</option>                                           
-                                                <option value='Change to 2nd line'>Change to 2nd line</option>                                           
-                                                <option value='Change to 3rd line'>Change to 3rd line</option>                                           
-                                                 
-                                                
-  
-                                                  </select>                                            
-                                        </div>
-
-                                    </td>
-                                </tr>
-                                   <!----------------------------->
-                                   <!----------------------------->
-                                    <tr class="ficha"><td>
-
-                                        <label class="col-xs-6">Other Outcomes</label>
-
-                                        <div class="controls col-xs-6">
-                                            <select  style=""   name="otheroutcomes" id="otheroutcomes" class="form-control col-xs-6" >
-                                                <option value=''>choose outcome</option>                                           
-                                               <option value='Collect new sample'>Collect new sample</option>                                           
-                                                <option value='Patient Died'>Patient Died</option>                                           
-                                                <option value='LTFU'>LTFU</option>
-                                                <option value='Transfer Out'>Transfer Out</option>  
-                                            </select>                                            
-                                        </div>
-
-                                    </td>
-                                </tr>
-                                   <!----------------------------->
-                                    <tr class="ficha"><td>
-
-                                        <label class="col-xs-6">First Regimen</label>
-
-                                        <div class="controls col-xs-6">
-                                            <select  style=""   name="firstregimen" id="firstregimen" class="form-control col-xs-6" >
-                                                <option value=''>choose regimen</option>                                           
-                                                <option value='ABC/3TC/NVP'>ABC/3TC/NVP</option>                                           
-                                                <option value='ABC/3TC/EFV'>ABC/3TC/EFV</option>                                           
-                                                <option value='ABC/3TC/LPV'>ABC/3TC/LPV</option>                                           
-                                                <option value='ABC/3TC/ATVr'>ABC/3TC/ATVr</option>                                           
-                                                <option value='AZT/3TC/NVP'>AZT/3TC/NVP</option>                                           
-                                                <option value='AZT/3TC/EFV'>AZT/3TC/EFV</option>                                           
-                                                <option value='AZT/3TC/LPVr'>AZT/3TC/LPVr</option>                                           
-                                                <option value='AZT/3TC/ATVr'>AZT/3TC/ATVr</option>                                           
-                                                <option value='TDF/3TC/NVP'>TDF/3TC/NVP</option>                                           
-                                                <option value='TDF/3TC/LPVr'>TDF/3TC/LPVr</option>                                           
-                                                <option value='TDF/3TC/ATVr'>TDF/3TC/ATVr</option> 
-                                                
-  
-                                                  </select>                                            
-                                        </div>
-
-                                    </td>
-                                </tr>
-                                   <!----------------------------->
-                                    <tr class="ficha ficha1"><td>
-
-                                        <label class="col-xs-6"></font>Second Regimen</label>
-
-                                        <div class="controls col-xs-6">
-                                            <select  style=""   name="secondregimen" id="secondregimen" class="form-control col-xs-6" >
-                                                <option value=''>choose regimen</option>                                           
-                                                <option value='ABC/3TC/NVP'>ABC/3TC/NVP</option>                                           
-                                                <option value='ABC/3TC/EFV'>ABC/3TC/EFV</option>                                           
-                                                <option value='ABC/3TC/LPV'>ABC/3TC/LPV</option>                                           
-                                                <option value='ABC/3TC/ATVr'>ABC/3TC/ATVr</option>                                           
-                                                <option value='AZT/3TC/NVP'>AZT/3TC/NVP</option>                                           
-                                                <option value='AZT/3TC/EFV'>AZT/3TC/EFV</option>                                           
-                                                <option value='AZT/3TC/LPVr'>AZT/3TC/LPVr</option>                                           
-                                                <option value='AZT/3TC/ATVr'>AZT/3TC/ATVr</option>                                           
-                                                <option value='TDF/3TC/NVP'>TDF/3TC/NVP</option>                                           
-                                                <option value='TDF/3TC/LPVr'>TDF/3TC/LPVr</option>                                           
-                                                <option value='TDF/3TC/ATVr'>TDF/3TC/ATVr</option> 
-                                                <option value='other'>Other Regimens(Specify in Comments)
-</option> 
-                                                
-  
-                                                  </select>                                            
-                                        </div>
-
-                                    </td>
-                                </tr>
-                                
-                                <tr class="ficha ficha3"><td>
-
-                                        <label class="col-xs-6"></font>Third Regimen</label>
-
-                                        <div class="controls col-xs-6">
-                                            <select  style=""   name="thirdregimen" id="thirdregimen" class="form-control col-xs-6" >
-                                                
-                                               
-</option> 
-                                                
-  
-                                                  </select>                                            
-                                        </div>
-
-                                    </td>
-                                </tr>
-                                
-                                <tr class="ficha ficha1"><td>
-
-                                        <label class="col-xs-6">Date of second Regimen</label>
-
-                                        <div class="controls col-xs-6">
-                                            <input type="text"  name ="secondregdate" id="secondregdate" data-date-end-date="0d" autocomplete="off" class="form-control dates" readonly placeholder="e.g yyyy-mm-dd">
-                                            
-                                        </div>
-
-                                    </td>
-
-                                </tr>
-                                
-                                 <!----------------------------->
-                                    <tr class="ficha"><td>
-
-                                        <label class="col-xs-6"><font color="red"><b></b></font>comments</label>
-
-                                        <div class="controls col-xs-6">
-                                            <textarea style=""   name="comments" id="comments" class="form-control col-xs-6" ></textarea>                                            
-                                        </div>
-
-                                    </td>
-                                </tr>
-                                
-                                         </table>
-                                <table class="table table-striped table-bordered">
-                                       <tr><td colspan="3" class="col-xs-12">               
-                                <div class="control-group col-xs-12">
-                                        <div class="alert-info">Note: Data is saved at the browser. Please ensure you connect to the internet for exporting to the server</div>
-                                   <br/>
-                                    <div class="controls">
-                                        <button type="submit" id='savebutton' onclick="validateweeklydata();" style="margin-left: 0%;" class="btn-lg btn-success active">
-                                            SAVE
-                                        </button>
-                                        <div class='alert alert-success' id='message' style='display:none;'><button type='button' class='close' data-dismiss='alert'>×</button><span id='actiondone'></span></div>
-                                     </div>
-                                   
-                                    <div class="controls">
-                                        <button type="submit" id='updatebutton' onclick="updateweeklydata();" style="margin-left: 0%;display:none;" class="btn-lg btn-info active">
-                                            UPDATE
-                                        </button>
-                                    
-                                        
-                                    </div>
-                                    
                                 </div>
-                                        </td></tr>
+                    
+                   
+                    
+                    
+                    <div class="control-group col-lg-12" >
+                                    <label class="col-lg-6">Sub-County (Optional)</label>
+                                    <div class="controls col-lg-6">
+                                        <select onchange="ldfacility();" name="rpt_subcounty" id="rpt_subcounty" style="width:100%;" class="form-control">
+                                            <option value="">Select County first</option>
+                                                                                       
+                                           
+                                        </select>
+                                    </div>
+                                </div>
+                    
+                    <div class="control-group col-lg-12" >
+                                    <label class='col-lg-6'>Facility (optional)</label>
+                                    <div class="controls col-lg-6">
+                                        <select multiple=""  name="rpt_facility" id="rpt_facility"  class="form-control">
+                                            <option>Select subcounty first</option>
+                                             
+                                            
+                                           
+                                        </select>
+                                    </div>
+                                </div> 
+                    
+                    
+                                <div class="control-group">
+                                    <label></label>
+                                    <div class="controls">
+                                        <button onclick=" getreport();" id="excelreportbtn"   style="margin-left: 30%;"  class="btn-lg btn-info active">
+                                            Generate
+                                        </button>
                                         
-                                </table>
-                            </form>
+                                        <img src='images/ajax_loader.gif' alt='loading' style="display:none; margin-left:30% ;" class='loading'/>
+                                        
+                                    </div>
+                                </div>   
+                    
+                </form>
+                  
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+
                         </div>
                         <!--/panel content-->
                     </div>
@@ -582,59 +254,11 @@ input:focus {
                               <!--Data entry code-->
                             
                             </div>
-                            <div class="tab-pane well" id="reports">
-                                
-                                
-                               <!--Dashboard code-->
                             
-                               
-                               
-                               
-                                                   <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4>Dashboard</h4></div>
-                        <div class="panel-body">
-                            <form id="reportsform">
-<table class='table table-striped table-bordered' id="reportstable" >
-    
-                            </table>
-                            </form>
-                        </div>
-                        <!--/panel-body-->
-                    </div>
-                    <!--/panel-->
-
-                               
-                              
-                              <!--Reports entry code-->
+                         
                             
-                            
-                            </div>
-                            <div class="tab-pane well" id="export">
-                                
-                                
-                               <!--- Data export---->
-                            </div>
-                            
-                            <div class="tab-pane well" id="searchdata">
-                                 <button id="btnDeleteRow" value="cancel">Delete selected Row</button>
-                                <div id="searchtablediv">
-                                  
-                                </div>    
-                               <!--- Data export---->
-                            </div>
-                            <div class="tab-pane well" id="cleardata">
-                                 
-                                <div >
-                                    
-                                 <h3>Clear synced CCC numbers</h3>
-            <p>To clear the ccc numbers and request for new ones, click the RESET button below  </p>
-            <button onclick=" resetcccdb();" id="resetdbbtn1" style="margin-left: 30%;" class="btn-lg btn-info active">
-                                            Reset
-                                </button> 
-                                </div>    
-                               <!--- Data export---->
-                            </div>
+                           
+                          
                             
                             
                             </div>
@@ -801,9 +425,11 @@ input:focus {
             <div class="modal-body">
                 <form action="#" class="userform" method="post">
                  <div class="control-group">
-                                    <label><font color="red"><b>*</b></font>  Your Email</label>
+                                    <label><font color="red"><b>*</b></font>  Your Name</label>
                                     <div class="controls">
-                                        <input type="text" size="14" placeholder="eg MJohn@fhi360.org"   required name="username" id="username" class="form-control" >
+                                        <select onchange="appenduserdetails();"   placeholder="eg MJohn@fhi360.org"   required name="username" id="username" class="form-control" >
+                                            <option value=''>No activated users</option>
+                                        </select>
                                     </div>
                                 </div> 
                     
@@ -815,7 +441,8 @@ input:focus {
                                            
                                         </select>
                                     </div>
-                                </div>
+                      </div>
+                    
                     <div class="control-group">
                                     <label><font color="red"><b>*</b></font>  supervisor(s) Email</label>
                                     <div class="controls">
@@ -881,16 +508,21 @@ input:focus {
                                              <option value="Kajiado">Kajiado</option>
                                              <option value="Laikipia">Laikipia</option>
                                              <option value="Nakuru">Nakuru</option>
-                                             <option value="Narok">Narok</option>                                           
+                                             <!--<option value="Narok">Narok</option>-->                                           
+                                             <option value="Samburu">Samburu</option>                                           
+                                             <!--<option value="Turkana">Turkana</option>-->                                           
                                            
                                         </select>
                                     </div>
                                 </div>
                     
+                   
+                    
+                    
                     <div class="control-group" >
                                     <label>Sub-County</label>
                                     <div class="controls">
-                                        <select  name="rpt_subcounty" id="rpt_subcounty" style="width:100%;" class="form-control">
+                                        <select onchange="ldfacility();" name="rpt_subcounty" id="rpt_subcounty" style="width:100%;" class="form-control">
                                             <option value="">Select County</option>
                                                                                        
                                            
@@ -898,17 +530,17 @@ input:focus {
                                     </div>
                                 </div>
                     
-                   <!-- <div class="control-group" >
+                    <div class="control-group" >
                                     <label>Facility </label>
                                     <div class="controls">
-                                        <select  name="rpt_facility" id="rpt_facility" style="width:100%;" class="form-control">
+                                        <select multiple=""  name="rpt_facility" id="rpt_facility" style="width:100%;" class="form-control">
                                             <option>Select Facility</option>
                                              
                                             
                                            
                                         </select>
                                     </div>
-                                </div> -->
+                                </div> 
                     
                     
                                 <div class="control-group">
@@ -1110,7 +742,7 @@ input:focus {
         var facilities="<option value=''>Select Facility</option>";
         
               $.ajax({
-                         url:'sites.json',                            
+                         url:'json/sites1.json',                            
                     type:'get',  
                     dataType: 'json',  
                     success: function(data) {
@@ -1190,7 +822,7 @@ function addaccount(isauthorized) {
      //if ok is returned , then save account. else .. show error
       $.ajax({
                          url:hostname+'validateAccess?kc='+enteredcode,                            
-                    type:'post',  
+                    type:'get',  
                     dataType: 'html',  
                     success: function(data) {
              
@@ -1273,16 +905,20 @@ function adduser(username,hosi,supervisormail) {
    {
        
     adduser(usern,hosp,supmail); 
-   showuser('aphiaplus',usern,hosp,supmail);   
-       
+   showuser('aphiaplus',usern,hosp,supmail); 
+   $("#totalcccnos").html("<br><img src='images/ajax_loader.gif'>");
+   setTimeout(delayedrefresh,4000);  
    }
    
   }  
     
+    var activeuser='';
+    
    function showuser(aphiaplus,updateduser,updatedfacil,supervisormail){
 
 
-	var counties=["Baringo","Kajiado","Laikipia","Nakuru","Narok","Samburu","Turkana"];
+//	var counties=["Baringo","Kajiado","Laikipia","Nakuru","Narok","Samburu","Turkana"];
+	var counties=["Baringo","Kajiado","Laikipia","Nakuru","Samburu"];
 	userdb.get("aphiaplus").then(function (doc) {
             //
             if(updateduser!==''){
@@ -1293,7 +929,11 @@ doc.supervisormail=supervisormail;
 return userdb.put(doc); //continue from here
             }         
             if(doc.username!==''){
- $("#username").val(doc.username);
+                activeuser=doc.username;
+                
+ $("#username").val(activeuser);
+ $("#username").select2();
+ 
  $("#usernamelabel").html(" Hi "+doc.username+ " ("+doc.facility+")");
   $("#supervisormail").val(doc.supervisormail);
  user=doc.username;
@@ -1420,13 +1060,13 @@ function showfacils(){
 //========================SAVE TARGETS============================
 //========================SAVE TARGETS============================
 
-var vldb = new PouchDB('vldata');
+var vldb = new PouchDB('vldata_v2');
 var remoteCouch = false;
 var receivedvldata;
 
 //{,"cccno":"15311003199","":"Narok North","datecollected":"2015-11-09","mflcode":"15311"}
 
-function addvldata(cccno,datecollected,mflcode,facility_name,county,subcounty,isupdated) 
+function addvldata(cccno,datecollected,mflcode,facility_name,county,subcounty,isupdated,sampletype,regimen,regimenline,datereceived) 
 {
    receivedvldata = {
 _id: cccno+"_"+datecollected,	
@@ -1437,6 +1077,10 @@ cccno:cccno,
 subcounty:subcounty,
 datecollected:datecollected,
 isupdated:isupdated,
+sampletype:sampletype,
+regimen:regimen,
+regimenline:regimenline,
+dateresultsreceived:datereceived,
 completed: false
   };
   vldb.put(receivedvldata, function callback(err, result) {
@@ -1446,7 +1090,7 @@ completed: false
   });
 }
 
-function updatevldata(cccno,datecollected,mflcode,facility_name,county,subcounty,isupdated){
+function updatevldata(cccno,datecollected,mflcode,facility_name,county,subcounty,isupdated,sampletype,regimen,regimenline,datereceived){
   //console.log(id);
    vldb.get(cccno+"_"+datecollected).then(function (doc) {
         
@@ -1459,6 +1103,12 @@ doc.datecollected=datecollected;
 doc.facility_name=facility_name;
 doc.county=county;
 doc.subcounty=subcounty;
+
+doc.sampletype=sampletype;
+doc.regimen=regimen;
+doc.regimenline=regimenline;
+doc.dateresultsreceived=datereceived;
+
 //doc.isupdated=isupdated;
         
    //alert('called');
@@ -1525,7 +1175,7 @@ if(facilis!==selectfacils && selectfacils!=='' && selectfacils!=='null'){
 
     if(curfacil===null || curfacil==='null'){
         
-       $('#adduserbutton').click();   
+       //$('#adduserbutton').click();   
         
     }
     else {
@@ -1545,11 +1195,14 @@ if(facilis!==selectfacils && selectfacils!=='' && selectfacils!=='null'){
           var cccupdated="";
                if( parseInt(data[i].updatestatus)> 0 ){ cccupdated="(updated) ";  }
               
-                      vldat+="<option title='' data-collectiondate='"+data[i].datecollected+"' value='"+data[i].cccno+"'>"+cccupdated+""+data[i].cccno+"</option>";
+                      vldat+="<option title='' data-sampletype='"+data[i].sampletype+"'  data-regimen='"+data[i].regimen+" ("+data[i].regimenline+" line)' data-collectiondate='"+data[i].datecollected+"' value='"+data[i].cccno+"'>"+cccupdated+""+data[i].cccno+"</option>";
                  
-                        addvldata(data[i].cccno,data[i].datecollected,data[i].mflcode,data[i].facility_name,data[i].county,data[i].subcounty,data[i].updatestatus);
-                        updatevldata(data[i].cccno,data[i].datecollected,data[i].mflcode,data[i].facility_name,data[i].county,data[i].subcounty,data[i].updatestatus);
+                        addvldata(data[i].cccno,data[i].datecollected,data[i].mflcode,data[i].facility_name,data[i].county,data[i].subcounty,data[i].updatestatus,data[i].sampletype,data[i].regimen,data[i].regimenline,data[i].dateReceived);
+                        updatevldata(data[i].cccno,data[i].datecollected,data[i].mflcode,data[i].facility_name,data[i].county,data[i].subcounty,data[i].updatestatus,data[i].sampletype,data[i].regimen,data[i].regimenline,data[i].dateReceived);
                        // console.log(" insert cccno "+data[i].cccno);
+                       //,sampletype,regimen,regimenline,datereceived
+                       
+
                         
             }    
         }
@@ -1599,7 +1252,7 @@ var remoteCouch = false;
 var outcomedata;
 
 //receive the artist, song title and lyrics text
-function insertautcomedata(id,datecollected,year,month,cccnumber,sampletype,patientcontacted,adherencemonths,secondsampledate,noteligible,noteligibleother,secondsampleresults,actiontaken,firstregimen,secondregimen,thirdregimen,otheroutcomes,comments,timestamp,user, syncstatus,secondregdate) {
+function insertautcomedata(id,datecollected,year,month,cccnumber,sampletype,patientcontacted,adherencemonths,secondsampledate,noteligible,noteligibleother,secondsampleresults,actiontaken,firstregimen,secondregimen,thirdregimen,otheroutcomes,comments,timestamp,user, syncstatus,secondregdate,cur_reg_startdate,vir_clinic_startdate,insupportgrp,supportgrp_enrol_date,repeatconf_notswitched_explained,postswitch_adherencesessions,postswitch_sample_col_date,postswitch_sampletype,postswitch_results_rec_date,postswitch_vl_results,not_suppressed_explained,actiontaken_other,repeatconf_notswitched_other_explained,repeatconf_results_rec_date,lasttca) {
    
 
          outcomedata = {
@@ -1622,9 +1275,24 @@ comments:comments,
 secondregdate:secondregdate,
         thirdregimen:thirdregimen,
         otheroutcomes:otheroutcomes,
+        lasttca:lasttca,
         timestamp:tarehe(),
         user:user,
-        syncstatus:syncstatus,        
+        syncstatus:syncstatus, 
+        cur_reg_startdate:cur_reg_startdate,
+vir_clinic_startdate:vir_clinic_startdate,
+insupportgrp:insupportgrp,
+supportgrp_enrol_date:supportgrp_enrol_date,
+repeatconf_notswitched_explained:repeatconf_notswitched_explained,
+postswitch_adherencesessions:postswitch_adherencesessions,
+postswitch_sample_col_date:postswitch_sample_col_date,
+postswitch_sampletype:postswitch_sampletype,
+postswitch_results_rec_date:postswitch_results_rec_date,
+postswitch_vl_results:postswitch_vl_results,
+not_suppressed_explained:not_suppressed_explained,
+actiontaken_other:actiontaken_other,
+repeatconf_notswitched_other_explained:repeatconf_notswitched_other_explained,
+repeatconf_results_rec_date:repeatconf_results_rec_date,
         completed: false
   };
   outcomedatadb.put(outcomedata, function callback(err, result) {
@@ -1640,7 +1308,7 @@ var outcomedatadb_longitudinal = new PouchDB('outcomedata_logitudinal',{auto_com
 var outcomedata_long;
 
 //receive the artist, song title and lyrics text
-function insertlongitudinaldata(id,datecollected,year,month,cccnumber,sampletype,patientcontacted,adherencemonths,secondsampledate,noteligible,noteligibleother,secondsampleresults,actiontaken,firstregimen,secondregimen,thirdregimen,otheroutcomes,comments,timestamp,user, syncstatus,secondregdate) {
+function insertlongitudinaldata(id,datecollected,year,month,cccnumber,sampletype,patientcontacted,adherencemonths,secondsampledate,noteligible,noteligibleother,secondsampleresults,actiontaken,firstregimen,secondregimen,thirdregimen,otheroutcomes,comments,timestamp,user, syncstatus,secondregdate,cur_reg_startdate,vir_clinic_startdate,insupportgrp,supportgrp_enrol_date,repeatconf_notswitched_explained,postswitch_adherencesessions,postswitch_sample_col_date,postswitch_sampletype,postswitch_results_rec_date,postswitch_vl_results,not_suppressed_explained,actiontaken_other,repeatconf_notswitched_other_explained,repeatconf_results_rec_date,lasttca) {
    
 
         outcomedata_long = {
@@ -1663,9 +1331,24 @@ comments:comments,
 secondregdate:secondregdate,
         thirdregimen:thirdregimen,
         otheroutcomes:otheroutcomes,
+        lasttca:lasttca,
         timestamp:tarehe(),
         user:user,
         syncstatus:syncstatus,        
+        cur_reg_startdate:cur_reg_startdate,
+vir_clinic_startdate:vir_clinic_startdate,
+insupportgrp:insupportgrp,
+supportgrp_enrol_date:supportgrp_enrol_date,
+repeatconf_notswitched_explained:repeatconf_notswitched_explained,
+postswitch_adherencesessions:postswitch_adherencesessions,
+postswitch_sample_col_date:postswitch_sample_col_date,
+postswitch_sampletype:postswitch_sampletype,
+postswitch_results_rec_date:postswitch_results_rec_date,
+postswitch_vl_results:postswitch_vl_results,
+not_suppressed_explained:not_suppressed_explained,
+actiontaken_other:actiontaken_other,
+repeatconf_notswitched_other_explained:repeatconf_notswitched_other_explained,
+repeatconf_results_rec_date:repeatconf_results_rec_date,
         completed: false
   };
   outcomedatadb_longitudinal.put(outcomedata_long, function callback(err, result) {
@@ -1677,7 +1360,7 @@ secondregdate:secondregdate,
     else if (err)  {
         
         console.log(" an error caused an update "+err);
-        saveweeklyupdates_logitudinal(id+"_"+tarehe(),datecollected,year,month,cccnumber,sampletype,patientcontacted,adherencemonths,secondsampledate,noteligible,noteligibleother,secondsampleresults,actiontaken,firstregimen,secondregimen,thirdregimen,otheroutcomes,comments,timestamp,user, syncstatus,secondregdate);
+        saveweeklyupdates_logitudinal(id+"_"+tarehe(),datecollected,year,month,cccnumber,sampletype,patientcontacted,adherencemonths,secondsampledate,noteligible,noteligibleother,secondsampleresults,actiontaken,firstregimen,secondregimen,thirdregimen,otheroutcomes,comments,timestamp,user, syncstatus,secondregdate,cur_reg_startdate,vir_clinic_startdate,insupportgrp,supportgrp_enrol_date,repeatconf_notswitched_explained,postswitch_adherencesessions,postswitch_sample_col_date,postswitch_sampletype,postswitch_results_rec_date,postswitch_vl_results,not_suppressed_explained,actiontaken_other,repeatconf_notswitched_other_explained,repeatconf_results_rec_date,lasttca);
     }
   });
 }	
@@ -1709,14 +1392,30 @@ var firstregimen=null;
 var secondregimen=null;
 var thirdregimen=null;
 var otheroutcomes=null;
+var lasttca=null;
 
 var comments=null;
 var secondregdate=null;
+
+var cur_reg_startdate=null;
+var vir_clinic_startdate=null;
+var insupportgrp=null;
+var supportgrp_enrol_date=null;
+var repeatconf_notswitched_explained=null;
+var postswitch_adherencesessions=null;
+var postswitch_sample_col_date=null;
+var postswitch_sampletype=null;
+var postswitch_results_rec_date=null;
+var postswitch_vl_results=null;
+var not_suppressed_explained=null;
+var actiontaken_other=null;
+var repeatconf_notswitched_other_explained=null;
+var repeatconf_results_rec_date=null;
    
    
    //added 201605 
     var progressbarstoskip=[];
-     var allindicatorsarray=["year","month","cccnno","sampletype","patientcontacted","adherencemonths","secondsampledate","noteligible","noteligibleother","secondsampleresults","actiontaken","firstregimen","secondregimen","thirdregimen","otheroutcomes","comments","secondregdate"];
+     var allindicatorsarray=["year","month","cccnno","sampletype","patientcontacted","adherencemonths","secondsampledate","noteligible","noteligibleother","secondsampleresults","actiontaken","firstregimen","secondregimen","thirdregimen","otheroutcomes","comments","secondregdate","cur_reg_startdate","vir_clinic_startdate","insupportgrp","supportgrp_enrol_date","repeatconf_notswitched_explained","postswitch_adherencesessions","postswitch_sample_col_date","postswitch_sampletype","postswitch_results_rec_date","postswitch_vl_results","not_suppressed_explained","actiontaken_other","repeatconf_notswitched_other_explained","repeatconf_results_rec_date","lasttca"];
      var allnontargetindicatorsarray=[];
      var allcommentsarray=[];
      var allprogressbar_hiddentext_array=[];
@@ -1726,114 +1425,7 @@ function createdynamicinputs(){
     
      $(document).ready(function(){
          
-       
-   
-//         $.getJSON("indicators1.json",function(result){
-//             var table="";
-//             var row1="";
-//             var row2="";
-//             var count=1;
-//             for(a=0;a< result.length; a++){
-//                 
-//             var indicatorname=result[a].IndicatorName;    
-//             var fullindicator=result[a].FullIndicator;    
-//             var indicatorid=result[a].IndicatorID;
-//             var label=result[a].Age;
-//             var level=result[a].Level;
-//             var inputtype=result[a].datainputtype;
-//             var minimum=result[a].Min;
-//             var maximum=result[a].Max;
-//             var onblur="";
-//             var onkey_up="autocalculate('"+indicatorid+"');";
-//             if(result[a].onblur!==null){
-//                 onblur="autocalculate('"+indicatorid+"');"+result[a].onblur;
-//             }
-//             var onkeypress=result[a].onkeypress;
-//             var tdclass=result[a].tdclass;
-//             var isrequired=result[a].Required;
-//             var isnewrow=result[a].newrow;
-//             var readonlyvar=result[a].readonly;
-//             var isreadonly="";
-//             allindicatorsarray.push(indicatorid);
-//             
-//             if(indicatorid.indexOf("target")===-1){
-//                 
-//              allnontargetindicatorsarray.push(indicatorid);   
-//             }
-//              var tabindex="";
-//             if(readonlyvar==="TRUE"){
-//                 
-//               isreadonly="readonly";
-//               tabindex=" tabindex='-1' style='background-color:#b1b1cd;' ";
-//             }
-//             var colspan=result[a].colspan;
-//            
-//             if(label==='Total' && tdclass==='col-xs-4' ){  }
-//             if(isnewrow===1)
-//             {
-//                 //dont show targets 
-//               if(hidetargetsui==='yes' && readonlyvar==="TRUE"  ){
-//                 row1="<tr class='hiderows' style='display:none;'> <td class='col-xs-12' colspan='3'> <div class='control-group'> <label  > <font color='red'> <b> * </b> </font> <span class='badge'> "+count+" </span>     "+indicatorname+"    <span class='badge' title='Indicator' data-toggle='popover' data-trigger='hover' data-content='"+fullindicator+"'>?</span> </label>  </div> </td> </tr>";
-//                 count++;
-//                 row2+=row1;   
-//                   
-//               }
-//               else {
-//                 row1="<tr> <td class='col-xs-12' colspan='3'> <div class='control-group'> <label  > <font color='red'> <b> * </b> </font> <span class='badge'> "+count+" </span>     "+indicatorname+"    <span class='badge' title='Indicator' data-toggle='popover' data-trigger='hover' data-content='"+fullindicator+"'>?</span> </label>  </div> </td> </tr>";
-//                 count++;
-//                 row2+=row1;
-//             }
-//             }
-//             else{
-//                 
-//                 row1="";
-//             }
-//              if(isnewrow===1 && count===2)
-//             {
-//               if(hidetargetsui==='yes' && readonlyvar==="TRUE"  ){
-//                     row2+=" <tr class='hiderows' style='display:none;'> ";   
-//               }   
-//               else {
-//                   
-//                     row2+=" <tr> ";   
-//                   
-//               }
-//                 
-//        
-//              }
-//              else  if(isnewrow===1 && count > 2 && count<result.length){
-//                  
-//                   if(hidetargetsui==='yes' && readonlyvar==="TRUE"  ){
-//                       
-//                         row2+=" </tr> <tr class='hiderows' style='display:none;'> "; 
-//                         
-//                       } else {
-//                           
-//                        row2+=" </tr> <tr> ";      
-//                   }
-//                  
-//               
-//                  
-//              }
-//              
-//              
-//              row2+="<td class='"+tdclass+"' colspan='"+colspan+"' > <div class='control-group' > <label> "+label+" </label> <div class='controls'> <input onkeypress='return numbers(event);'  "+isreadonly+"  "+tabindex+" onblur=\""+onblur+"\"  onfocus='this.value = this.value;' type='text' min ='"+minimum+"' max='"+maximum+"' maxlength='7' data-"+indicatorid+"='0' data-previous_"+indicatorid+"='0'  name='"+indicatorid+"' id='"+indicatorid+"' class='form-control'> </div> </div> </td> ";
-//            //IndicatorID	Age	IndicatorName	Level	datainputtype	Min	Max	onblur	onkeypress	Class	Required
-//    
-//     
-//     //now do an appending
-//                 
-//             }
-//             row2+=" </tr> ";   
-//            
-//            //alert(row2);
-//             $("#dynamicindicators").html(row2);
-//            
-//         $('[data-toggle="popover"]').popover();   
-// 
-//    });// ned of input field loading
-//    
-//    
+      
   
     
         
@@ -1948,12 +1540,12 @@ function showvldetailed(faciliname){
                       if( parseInt(dat.doc.isupdated)> 0 )
                       {
                           
-                      vldat+="<option title='outcome records updated' data-collectiondate='"+dat.doc.datecollected+"' value='"+dat.doc.cccno+"'>(updated) "+dat.doc.cccno+"</option>";
+                      vldat+="<option  data-sampletype='"+dat.doc.sampletype+"' data-regimen='"+dat.doc.regimen+" ("+dat.doc.regimenline+" line)' title='outcome records updated' data-collectiondate='"+dat.doc.datecollected+"' value='"+dat.doc.cccno+"'>(updated) "+dat.doc.cccno+"</option>";
                  
                           
                       }
                       else {
-		 vldat+="<option data-collectiondate='"+dat.doc.datecollected+"' value='"+dat.doc.cccno+"'>"+dat.doc.cccno+"</option>";
+		 vldat+="<option data-sampletype='"+dat.doc.sampletype+"' data-regimen='"+dat.doc.regimen+" ("+dat.doc.regimenline+" line)' data-collectiondate='"+dat.doc.datecollected+"' value='"+dat.doc.cccno+"'>"+dat.doc.cccno+"</option>";
                            }
                   }//end of if
                   
@@ -2009,8 +1601,28 @@ firstregimen=$("#firstregimen").val();
 secondregimen=$("#secondregimen").val();
 thirdregimen=$("#thirdregimen").val();
 otheroutcomes=$("#otheroutcomes").val();
+lasttca=$("#lasttca").val();
 comments=$("#comments").val().trim();
 secondregdate=$("#secondregdate").val();
+
+//_______________added columns____
+cur_reg_startdate=$('#cur_reg_startdate').val();
+vir_clinic_startdate=$('#vir_clinic_startdate').val();
+insupportgrp=$('#insupportgrp').val();
+supportgrp_enrol_date=$('#supportgrp_enrol_date').val();
+repeatconf_notswitched_explained=$('#repeatconf_notswitched_explained').val();
+postswitch_adherencesessions=$('#postswitch_adherencesessions').val();
+postswitch_sample_col_date=$('#postswitch_sample_col_date').val();
+postswitch_sampletype=$('#postswitch_sampletype').val();
+postswitch_results_rec_date=$('#postswitch_results_rec_date').val();
+postswitch_vl_results=$('#postswitch_vl_results').val();
+not_suppressed_explained=$('#not_suppressed_explained').val();
+actiontaken_other=$('#actiontaken_other').val();
+repeatconf_notswitched_other_explained=$('#repeatconf_notswitched_other_explained').val();
+repeatconf_results_rec_date=$('#repeatconf_results_rec_date').val();
+
+
+
     
     //receive all the fields from the weekly data from
     var user=$("#username").val(); 
@@ -2045,13 +1657,7 @@ secondregdate=$("#secondregdate").val();
      alert('Select month');
       
      } 
-      else if (sampletype==='')
-     {
-          $("#sampletype").css('border-color','red'); 
-     alert('Select sample type');
-      
-     } 
-     
+    
       
     
   
@@ -2063,14 +1669,8 @@ secondregdate=$("#secondregdate").val();
      
        }
    
-          else if(adherencemonths==='' && $(".ficha").is(':visible')===true)
-      {
-         
-   alert('Choose Adherence sessions');
   
-    $("#adherencemonths").css('border-color','red'); 
      
-       }   
        
        
 //          else if($(".ficha").is(':visible')===true && actiontaken===''){
@@ -2117,6 +1717,58 @@ secondregdate=$("#secondregdate").val();
         
     }
      
+     
+       else if( cur_reg_startdate===''){
+        
+        alert('Input date started Current Regimen');
+  
+    $("#cur_reg_startdate").css('border-color','red'); 
+        
+    }
+    
+    
+       else if( vir_clinic_startdate===''){
+        
+        alert('Input date started Viremia Clinic');
+  
+    $("#vir_clinic_startdate").css('border-color','red'); 
+        
+    }
+     
+     
+     else if( insupportgrp===''){
+        
+        alert('Specify if client is in a Support group');
+  
+    $("#insupportgrp").css('border-color','red'); 
+        
+    }
+     
+     else if( insupportgrp==='Yes' && supportgrp_enrol_date===''){
+        
+        alert('Specify the date client was enrolled in Support group');
+  
+    $("#supportgrp_enrol_date").css('border-color','red'); 
+        
+    }
+     
+             else if(adherencemonths==='' && $(".ficha").is(':visible')===true)
+      {
+         
+   alert('Choose Adherence sessions');
+  
+    $("#adherencemonths").css('border-color','red'); 
+     
+       }
+       
+         else if (sampletype==='')
+     {
+          $("#sampletype").css('border-color','red'); 
+     alert('Select sample type');
+      
+     } 
+     
+     
 //# HIV positive[cumulative]
 
 //        else if(noteligible==='Other' && noteligibleother==='')
@@ -2148,7 +1800,23 @@ secondregdate=$("#secondregdate").val();
 //     
 //       }
 //   
-          
+              else if(actiontaken==='Others'  && actiontaken_other==='' )
+      {
+         
+   alert('specify other action taken');
+
+       $("#actiontaken_other").css('border-color','red'); 
+     
+       }
+        
+                else if(not_suppressed_explained==='' && postswitch_vl_results==='>1000'  )
+      {
+         
+   alert('Please enter an explanation for reason for non-suppression');
+
+       $("#comments").css('border-color','red'); 
+     
+       }  
        
        else {
            
@@ -2163,9 +1831,9 @@ secondregdate=$("#secondregdate").val();
             //we are now saving both weekly totals and annual cumulatives on the db
             //add a variable to distinguish the two
             //use _wk
-          insertautcomedata(id,datecollected,year,month,cccnumber,sampletype,patientcontacted,adherencemonths,secondsampledate,noteligible,noteligibleother,secondsampleresults,actiontaken,firstregimen,secondregimen,thirdregimen,otheroutcomes,comments,timestamp,user, syncstatus,secondregdate) ;
-          insertlongitudinaldata(id,datecollected,year,month,cccnumber,sampletype,patientcontacted,adherencemonths,secondsampledate,noteligible,noteligibleother,secondsampleresults,actiontaken,firstregimen,secondregimen,thirdregimen,otheroutcomes,comments,timestamp,user, syncstatus,secondregdate) ;
-         console.log(id+"@"+datecollected+"@"+year+'@'+month+'@'+cccnumber+'@'+sampletype+'@'+patientcontacted+'@'+adherencemonths+'@'+secondsampledate+'@'+noteligible+'@'+noteligibleother+'@'+secondsampleresults+'@'+actiontaken+'@'+firstregimen+'@'+secondregimen+'@'+thirdregimen+'@'+otheroutcomes+'@'+comments+"@"+timestamp+"@"+user+"@"+ syncstatus+"@"+secondregdate) ;
+          insertautcomedata(id,datecollected,year,month,cccnumber,sampletype,patientcontacted,adherencemonths,secondsampledate,noteligible,noteligibleother,secondsampleresults,actiontaken,firstregimen,secondregimen,thirdregimen,otheroutcomes,comments,timestamp,user, syncstatus,secondregdate,cur_reg_startdate,vir_clinic_startdate,insupportgrp,supportgrp_enrol_date,repeatconf_notswitched_explained,postswitch_adherencesessions,postswitch_sample_col_date,postswitch_sampletype,postswitch_results_rec_date,postswitch_vl_results,not_suppressed_explained,actiontaken_other,repeatconf_notswitched_other_explained,repeatconf_results_rec_date,lasttca) ;
+          insertlongitudinaldata(id,datecollected,year,month,cccnumber,sampletype,patientcontacted,adherencemonths,secondsampledate,noteligible,noteligibleother,secondsampleresults,actiontaken,firstregimen,secondregimen,thirdregimen,otheroutcomes,comments,timestamp,user, syncstatus,secondregdate,cur_reg_startdate,vir_clinic_startdate,insupportgrp,supportgrp_enrol_date,repeatconf_notswitched_explained,postswitch_adherencesessions,postswitch_sample_col_date,postswitch_sampletype,postswitch_results_rec_date,postswitch_vl_results,not_suppressed_explained,actiontaken_other,repeatconf_notswitched_other_explained,repeatconf_results_rec_date,lasttca) ;
+         console.log(id+"@"+datecollected+"@"+year+'@'+month+'@'+cccnumber+'@'+sampletype+'@'+patientcontacted+'@'+adherencemonths+'@'+secondsampledate+'@'+noteligible+'@'+noteligibleother+'@'+secondsampleresults+'@'+actiontaken+'@'+firstregimen+'@'+secondregimen+'@'+thirdregimen+'@'+otheroutcomes+'@'+comments+"@"+timestamp+"@"+user+"@"+ syncstatus+"@"+secondregdate+'@'+cur_reg_startdate+'@'+vir_clinic_startdate+'@'+insupportgrp+'@'+supportgrp_enrol_date+'@'+repeatconf_notswitched_explained+'@'+postswitch_adherencesessions+'@'+postswitch_sample_col_date+'@'+postswitch_sampletype+'@'+postswitch_results_rec_date+'@'+postswitch_vl_results+'@'+not_suppressed_explained+'@'+actiontaken_other+'@'+repeatconf_notswitched_other_explained+'@'+repeatconf_results_rec_date+'@'+lasttca) ;
    updatevlstatus(cccnumber,datecollected,'1');
 clearweeklyfields();
 
@@ -2358,10 +2026,10 @@ function loadsavedweekelydata(id,openreportstab ){
      $("#month").val(doc.month); 
       var fc=$("#facilityname").val();
       
-       $("#cccno").html("<option data-collectiondate='"+doc.datecollected+"' value='"+doc.cccnumber+"'>"+doc.cccnumber+"</option>");
-                   $('#cccno').select2();
-//      $("#cccno").val(doc.cccnumber);     
-//       $('#cccno').select2(); 
+       //$("#cccno").html("<option data-collectiondate='"+doc.datecollected+"' value='"+doc.cccnumber+"'>"+doc.cccnumber+"</option>");
+                   //$('#cccno').select2();
+      $("#cccno").val(doc.cccnumber);     
+       $('#cccno').select2(); 
 
  $("#sampletype").val(doc.sampletype);
  $("#patientcontacted").val(doc.patientcontacted);
@@ -2381,8 +2049,31 @@ function loadsavedweekelydata(id,openreportstab ){
  $("#secondregimen").val(doc.secondregimen);
  $("#thirdregimen").val(doc.thirdregimen);
  $("#otheroutcomes").val(doc.otheroutcomes);
+ $("#lasttca").val(doc.lasttca);
  $("#comments").val(doc.comments);   
  $("#secondregdate").val(doc.secondregdate);
+ 
+$('#cur_reg_startdate').val(doc.cur_reg_startdate);
+$('#vir_clinic_startdate').val(doc.vir_clinic_startdate);
+$('#insupportgrp').val(doc.insupportgrp);
+$('#supportgrp_enrol_date').val(doc.supportgrp_enrol_date);
+$('#repeatconf_notswitched_explained').val(doc.repeatconf_notswitched_explained);
+$('#postswitch_adherencesessions').val(doc.postswitch_adherencesessions);
+$('#postswitch_sample_col_date').val(doc.postswitch_sample_col_date);
+$('#postswitch_sampletype').val(doc.postswitch_sampletype);
+$('#postswitch_results_rec_date').val(doc.postswitch_results_rec_date);
+$('#postswitch_vl_results').val(doc.postswitch_vl_results);
+$('#not_suppressed_explained').val(doc.not_suppressed_explained);
+$('#actiontaken_other').val(doc.actiontaken_other);
+$('#repeatconf_notswitched_other_explained').val(doc.repeatconf_notswitched_other_explained);
+$('#repeatconf_results_rec_date').val(doc.repeatconf_results_rec_date);
+
+ 
+ 
+ 
+ 
+ 
+ 
  //set cccno atthis point so as to allow loading of ccc no's from db
     
      //hide the tabular header of + Enter Data and unhide the edit data 
@@ -2416,12 +2107,28 @@ function loadsavedweekelydata(id,openreportstab ){
 selectwidth();
  
  fichua(); 
+ 
+ //call cinditional input field toggling functions
+ 
+loadregimen();
+supportgroupdate();
+//decideactiontaken();
+$("#actiontaken").change();
+toggleactiontaken_other();
+explainnonswitch();
+notsuppressedexplained();
+
+fichapostswitch();
+otherreasonfornonswitch();
+ 
+ togglelasttca();
+ 
 
 });
 
  
  
-}
+}//end of load weekely report
 
 $("#refreshpage" ).click(function() 
 {
@@ -2476,8 +2183,26 @@ firstregimen=$("#firstregimen").val();
 secondregimen=$("#secondregimen").val();
 thirdregimen=$("#thirdregimen").val();
 otheroutcomes=$("#otheroutcomes").val();
+lasttca=$("#lasttca").val();
 comments=$("#comments").val().trim();
 secondregdate=$("#secondregdate").val();
+
+
+cur_reg_startdate=$('#cur_reg_startdate').val();
+vir_clinic_startdate=$('#vir_clinic_startdate').val();
+insupportgrp=$('#insupportgrp').val();
+supportgrp_enrol_date=$('#supportgrp_enrol_date').val();
+repeatconf_notswitched_explained=$('#repeatconf_notswitched_explained').val();
+postswitch_adherencesessions=$('#postswitch_adherencesessions').val();
+postswitch_sample_col_date=$('#postswitch_sample_col_date').val();
+postswitch_sampletype=$('#postswitch_sampletype').val();
+postswitch_results_rec_date=$('#postswitch_results_rec_date').val();
+postswitch_vl_results=$('#postswitch_vl_results').val();
+not_suppressed_explained=$('#not_suppressed_explained').val();
+actiontaken_other=$('#actiontaken_other').val();
+repeatconf_notswitched_other_explained=$('#repeatconf_notswitched_other_explained').val();
+repeatconf_results_rec_date=$('#repeatconf_results_rec_date').val();
+
     
     //receive all the fields from the weekly data from
     var user=$("#username").val(); 
@@ -2512,12 +2237,48 @@ secondregdate=$("#secondregdate").val();
      alert('Select month');
       
      } 
-      else if (sampletype==='')
-     {
-          $("#sampletype").css('border-color','red'); 
-     alert('Select sample type');
-      
-     }
+     
+     
+     
+     
+     
+
+ else if( cur_reg_startdate===''){
+        
+        alert('Input date started Current Regimen');
+  
+    $("#cur_reg_startdate").css('border-color','red'); 
+        
+    }
+    
+    
+       else if( vir_clinic_startdate===''){
+        
+        alert('Input date started Viremia Clinic');
+  
+    $("#vir_clinic_startdate").css('border-color','red'); 
+        
+    }
+     
+     
+     else if( insupportgrp===''){
+        
+        alert('Specify if client is in a Support group');
+  
+    $("#insupportgrp").css('border-color','red'); 
+        
+    }
+     
+     else if( insupportgrp==='Yes' && supportgrp_enrol_date===''){
+        
+        alert('Specify the date client was enrolled in Support group');
+  
+    $("#supportgrp_enrol_date").css('border-color','red'); 
+        
+    }
+     
+     
+   
      
       
    //else if ($(".ficha").is(':visible')===true){ 
@@ -2539,13 +2300,21 @@ secondregdate=$("#secondregdate").val();
      
        }
        
-       else if(noteligible==='Other' && noteligibleother==='' && $(".ficha").is(':visible')===true)
-      {
-         
-   alert('Enter Reason Not eligible other');
-   $("#noteligibleother").focus();    
-     
-       }
+          else if (sampletype==='')
+     {
+          $("#sampletype").css('border-color','red'); 
+     alert('Select sample type');
+      
+     }
+       
+       
+//       else if(noteligible==='Other' && noteligibleother==='' && $(".ficha").is(':visible')===true)
+//      {
+//         
+//   alert('Enter Reason Not eligible other');
+//   $("#noteligibleother").focus();    
+//     
+//       }
    
       
 
@@ -2604,7 +2373,27 @@ secondregdate=$("#secondregdate").val();
       
        
       // }
-//# HIV positive[cumulative]
+
+
+     
+	 
+	           else if(actiontaken==='Others'  && actiontaken_other==='' )
+      {
+         
+   alert('specify other action taken');
+
+       $("#actiontaken_other").css('border-color','red'); 
+     
+       }
+        
+                else if(not_suppressed_explained==='' && postswitch_vl_results==='>1000'  )
+      {
+         
+   alert('Please enter an explanation for reason for non-suppression');
+
+       $("#comments").css('border-color','red'); 
+     
+       } 
 
         
    
@@ -2615,8 +2404,8 @@ secondregdate=$("#secondregdate").val();
              $('#datasavedmodal').click(); 
             $('#datasavedmsg').html("<font  color='green'>Data updated successfully!</font>"); 
     
-          saveweeklyupdates(id,datecollected,year,month,cccnumber,sampletype,patientcontacted,adherencemonths,secondsampledate,noteligible,noteligibleother,secondsampleresults,actiontaken,firstregimen,secondregimen,thirdregimen,otheroutcomes,comments,timestamp,user, syncstatus,secondregdate) ;
-          insertlongitudinaldata(id,datecollected,year,month,cccnumber,sampletype,patientcontacted,adherencemonths,secondsampledate,noteligible,noteligibleother,secondsampleresults,actiontaken,firstregimen,secondregimen,thirdregimen,otheroutcomes,comments,timestamp,user, syncstatus,secondregdate) ;
+          saveweeklyupdates(id,datecollected,year,month,cccnumber,sampletype,patientcontacted,adherencemonths,secondsampledate,noteligible,noteligibleother,secondsampleresults,actiontaken,firstregimen,secondregimen,thirdregimen,otheroutcomes,comments,timestamp,user, syncstatus,secondregdate,cur_reg_startdate,vir_clinic_startdate,insupportgrp,supportgrp_enrol_date,repeatconf_notswitched_explained,postswitch_adherencesessions,postswitch_sample_col_date,postswitch_sampletype,postswitch_results_rec_date,postswitch_vl_results,not_suppressed_explained,actiontaken_other,repeatconf_notswitched_other_explained,repeatconf_results_rec_date,lasttca) ;
+          insertlongitudinaldata(id,datecollected,year,month,cccnumber,sampletype,patientcontacted,adherencemonths,secondsampledate,noteligible,noteligibleother,secondsampleresults,actiontaken,firstregimen,secondregimen,thirdregimen,otheroutcomes,comments,timestamp,user, syncstatus,secondregdate,cur_reg_startdate,vir_clinic_startdate,insupportgrp,supportgrp_enrol_date,repeatconf_notswitched_explained,postswitch_adherencesessions,postswitch_sample_col_date,postswitch_sampletype,postswitch_results_rec_date,postswitch_vl_results,not_suppressed_explained,actiontaken_other,repeatconf_notswitched_other_explained,repeatconf_results_rec_date,lasttca) ;
         updatevlstatus(cccnumber,datecollected,'1');
 
 //call refressh code here
@@ -2634,7 +2423,7 @@ setTimeout(delayedrefresh,1800);
     
 }
    
-function saveweeklyupdates(id,datecollected,year,month,cccnumber,sampletype,patientcontacted,adherencemonths,secondsampledate,noteligible,noteligibleother,secondsampleresults,actiontaken,firstregimen,secondregimen,thirdregimen,otheroutcomes,comments,timestamp,user, syncstatus,secondregdate) {
+function saveweeklyupdates(id,datecollected,year,month,cccnumber,sampletype,patientcontacted,adherencemonths,secondsampledate,noteligible,noteligibleother,secondsampleresults,actiontaken,firstregimen,secondregimen,thirdregimen,otheroutcomes,comments,timestamp,user, syncstatus,secondregdate,cur_reg_startdate,vir_clinic_startdate,insupportgrp,supportgrp_enrol_date,repeatconf_notswitched_explained,postswitch_adherencesessions,postswitch_sample_col_date,postswitch_sampletype,postswitch_results_rec_date,postswitch_vl_results,not_suppressed_explained,actiontaken_other,repeatconf_notswitched_other_explained,repeatconf_results_rec_date,lasttca) {
 
 
  outcomedatadb.get(id).then(function (doc) {
@@ -2658,6 +2447,7 @@ doc.actiontaken=actiontaken;
 doc.firstregimen=firstregimen;
 doc.secondregimen=secondregimen;
 doc.otheroutcomes=otheroutcomes;
+doc.lasttca=lasttca;
 doc.thirdregimen=thirdregimen;
 doc.comments=comments;           
 doc.secondregdate=secondregdate;           
@@ -2665,6 +2455,23 @@ doc.secondregdate=secondregdate;
         doc.timestamp=timestamp;
         doc.user=user;
         doc.syncstatus=syncstatus; 
+        
+        
+        doc.cur_reg_startdate=cur_reg_startdate;
+doc.vir_clinic_startdate=vir_clinic_startdate;
+doc.insupportgrp=insupportgrp;
+doc.supportgrp_enrol_date=supportgrp_enrol_date;
+doc.repeatconf_notswitched_explained=repeatconf_notswitched_explained;
+doc.postswitch_adherencesessions=postswitch_adherencesessions;
+doc.postswitch_sample_col_date=postswitch_sample_col_date;
+doc.postswitch_sampletype=postswitch_sampletype;
+doc.postswitch_results_rec_date=postswitch_results_rec_date;
+doc.postswitch_vl_results=postswitch_vl_results;
+doc.not_suppressed_explained=not_suppressed_explained;
+doc.actiontaken_other=actiontaken_other;
+doc.repeatconf_notswitched_other_explained=repeatconf_notswitched_other_explained;
+doc.repeatconf_results_rec_date=repeatconf_results_rec_date;
+        
    //alert('called');
   // put them back
   return outcomedatadb.put(doc);
@@ -2674,7 +2481,7 @@ doc.secondregdate=secondregdate;
  
 } 
    
-function saveweeklyupdates_logitudinal(id,datecollected,year,month,cccnumber,sampletype,patientcontacted,adherencemonths,secondsampledate,noteligible,noteligibleother,secondsampleresults,actiontaken,firstregimen,secondregimen,thirdregimen,otheroutcomes,comments,timestamp,user, syncstatus,secondregdate) {
+function saveweeklyupdates_logitudinal(id,datecollected,year,month,cccnumber,sampletype,patientcontacted,adherencemonths,secondsampledate,noteligible,noteligibleother,secondsampleresults,actiontaken,firstregimen,secondregimen,thirdregimen,otheroutcomes,comments,timestamp,user, syncstatus,secondregdate,cur_reg_startdate,vir_clinic_startdate,insupportgrp,supportgrp_enrol_date,repeatconf_notswitched_explained,postswitch_adherencesessions,postswitch_sample_col_date,postswitch_sampletype,postswitch_results_rec_date,postswitch_vl_results,not_suppressed_explained,actiontaken_other,repeatconf_notswitched_other_explained,repeatconf_results_rec_date,lasttca) {
 
 
  outcomedatadb_longitudinal.get(id).then(function (doc) {
@@ -2698,6 +2505,7 @@ doc.actiontaken=actiontaken;
 doc.firstregimen=firstregimen;
 doc.secondregimen=secondregimen;
 doc.otheroutcomes=otheroutcomes;
+doc.lasttca=lasttca;
 doc.thirdregimen=thirdregimen;
 doc.comments=comments;           
 doc.secondregdate=secondregdate;           
@@ -2705,6 +2513,24 @@ doc.secondregdate=secondregdate;
         doc.timestamp=tarehe();
         doc.user=user;
         doc.syncstatus=syncstatus; 
+        
+doc.cur_reg_startdate=cur_reg_startdate;
+doc.vir_clinic_startdate=vir_clinic_startdate;
+doc.insupportgrp=insupportgrp;
+doc.supportgrp_enrol_date=supportgrp_enrol_date;
+doc.repeatconf_notswitched_explained=repeatconf_notswitched_explained;
+doc.postswitch_adherencesessions=postswitch_adherencesessions;
+doc.postswitch_sample_col_date=postswitch_sample_col_date;
+doc.postswitch_sampletype=postswitch_sampletype;
+doc.postswitch_results_rec_date=postswitch_results_rec_date;
+doc.postswitch_vl_results=postswitch_vl_results;
+doc.not_suppressed_explained=not_suppressed_explained;
+doc.actiontaken_other=actiontaken_other;
+doc.repeatconf_notswitched_other_explained=repeatconf_notswitched_other_explained;
+doc.repeatconf_results_rec_date=repeatconf_results_rec_date;
+
+
+        
    //alert('called');
   // put them back
   return outcomedatadb_longitudinal.put(doc);
@@ -2725,10 +2551,12 @@ doc.secondregdate=secondregdate;
 var syncstatusarray=[];
 function importdata(){
     
+    var returnedresponses=0;
    // $('#exportbutton').on('click',function() {
     $("#exportbutton").prop("disabled",true);
     $("#exportbutton").removeClass('btn-lg btn-success').addClass('btn btn-default');
 
+var recordsunexported=$("#unexported").val();
                 //read db files that have not been synced
                 
                 
@@ -2780,8 +2608,8 @@ function importdata(){
             
             
              $.ajax({
-                         url:hostname+'exportdata',                            
-                    type:'post', 
+                         url:hostname+'exportv2',                            
+                    type:'get', 
 data:{id:dat.doc._id,
     datecollected:dat.doc.datecollected,
 year:dat.doc.year,
@@ -2800,8 +2628,26 @@ firstregimen:dat.doc.firstregimen,
 secondregimen:dat.doc.secondregimen,
 thirdregimen:dat.doc.thirdregimen,
 otheroutcomes:dat.doc.otheroutcomes,
+lasttca:dat.doc.lasttca,
 comments:dat.doc.comments,                  
-secondregdate:dat.doc.secondregdate,                  
+secondregdate:dat.doc.secondregdate, 
+
+cur_reg_startdate:dat.doc.cur_reg_startdate,
+vir_clinic_startdate:dat.doc.vir_clinic_startdate,
+insupportgrp:dat.doc.insupportgrp,
+supportgrp_enrol_date:dat.doc.supportgrp_enrol_date,
+repeatconf_notswitched_explained:dat.doc.repeatconf_notswitched_explained,
+postswitch_adherencesessions:dat.doc.postswitch_adherencesessions,
+postswitch_sample_col_date:dat.doc.postswitch_sample_col_date,
+postswitch_sampletype:dat.doc.postswitch_sampletype,
+postswitch_results_rec_date:dat.doc.postswitch_results_rec_date,
+postswitch_vl_results:dat.doc.postswitch_vl_results,
+not_suppressed_explained:dat.doc.not_suppressed_explained,
+actiontaken_other:dat.doc.actiontaken_other,
+repeatconf_notswitched_other_explained:dat.doc.repeatconf_notswitched_other_explained,
+repeatconf_results_rec_date:dat.doc.repeatconf_results_rec_date,
+
+
           timestamp:dat.doc.timestamp,
           user:dat.doc.user+""+supv,//added supervisor email
            exportid:uniqid,
@@ -2809,7 +2655,7 @@ secondregdate:dat.doc.secondregdate,
           dataType: 'html',  
                     success: function(data) {
                        
-                       
+                       returnedresponses++;
                        
                         $("#exportresponse").append("<b>*"+data+'</b><br/>');
                          
@@ -2819,6 +2665,22 @@ secondregdate:dat.doc.secondregdate,
                  //$("#exportresponse").append("<b><font color='orange'>Exporting Completed.</b>");
   
                       }
+                      
+                      
+                        if(parseInt(returnedresponses)===parseInt(recordsunexported)){
+                 $("#exportbutton").show();
+                 $("#exportmsg").hide();
+                 if(returnedresponses<1000){
+                 $("#exportresponse").append("<br/>.<br/>.<br/>.<br/><b><font color='green'><b>"+returnedresponses+" records</b> completed successfully. </b>"); 
+             setTimeout(delayedrefresh,2000);
+            }
+             else {
+                      $("#exportresponse").append("<b><font color='orange'>Exporting did not complete successfully.</b>"); 
+                 
+             }
+                       
+                   }
+                      
                          
                    //doc.syncstatus="Yes"; 
    //alert('called');
@@ -2923,8 +2785,8 @@ function importdata_logitudinal(exportid){
             //url:'http://104.45.29.195:8080/aphiaplus_moi/importweeklydata',
             
              $.ajax({
-                         url:hostname+'exportdata',                            
-                    type:'post', 
+                         url:hostname+'exportv2',                            
+                    type:'get', 
 data:{id:dat.doc._id,
     datecollected:dat.doc.datecollected,
 year:dat.doc.year,
@@ -2943,10 +2805,28 @@ firstregimen:dat.doc.firstregimen,
 secondregimen:dat.doc.secondregimen,
 thirdregimen:dat.doc.thirdregimen,
 otheroutcomes:dat.doc.otheroutcomes,
+lasttca:dat.doc.lasttca,
 comments:dat.doc.comments,                  
-secondregdate:dat.doc.secondregdate,                  
+secondregdate:dat.doc.secondregdate,
+
+cur_reg_startdate:dat.doc.cur_reg_startdate,
+vir_clinic_startdate:dat.doc.vir_clinic_startdate,
+insupportgrp:dat.doc.insupportgrp,
+supportgrp_enrol_date:dat.doc.supportgrp_enrol_date,
+repeatconf_notswitched_explained:dat.doc.repeatconf_notswitched_explained,
+postswitch_adherencesessions:dat.doc.postswitch_adherencesessions,
+postswitch_sample_col_date:dat.doc.postswitch_sample_col_date,
+postswitch_sampletype:dat.doc.postswitch_sampletype,
+postswitch_results_rec_date:dat.doc.postswitch_results_rec_date,
+postswitch_vl_results:dat.doc.postswitch_vl_results,
+not_suppressed_explained:dat.doc.not_suppressed_explained,
+actiontaken_other:dat.doc.actiontaken_other,
+repeatconf_notswitched_other_explained:dat.doc.repeatconf_notswitched_other_explained,
+repeatconf_results_rec_date:dat.doc.repeatconf_results_rec_date,
+
+
           timestamp:dat.doc.timestamp,
-          user:dat.doc.user,
+          //user:dat.doc.user,
           user:dat.doc.user+""+supv,//added supervisor email
            exportid:exportid,
       db:'outcomes_logitudinal'},
@@ -3066,6 +2946,7 @@ function unsynceddata(){
           	                    } //end of for loop
 	 
 	$("#unexportedno").html("<br/>( "+displaytext+" )");
+        $("#unexported").val(cnt1);
         if(cnt1>0){
             $("#exportdataanchor1").show();
             $("#exportdataanchor2").show();
@@ -3365,7 +3246,7 @@ userdb.allDocs({include_docs:true,ascending: true}).then(function (doc)
     
     if(doc.total_rows===0){
         
-        $('#adduserbutton').click()
+       // $('#adduserbutton').click()
     }
 
  username=doc.username;
@@ -3447,6 +3328,7 @@ function selectwidth100(){
   
    
       $("#facilityname").width('100%');
+      $("#username").width('100%');
     
 }
 
@@ -3488,6 +3370,7 @@ function getreport(){
     var exelend=$("#enddaterpt").val();
     var countyrpt=$("#rpt_county").val();
     var rptsubcounty=$("#rpt_subcounty").val();   
+    var rptfacil=$("#rpt_facility").val();   
         if (exelstart==='')
      {
          
@@ -3508,7 +3391,7 @@ function getreport(){
                 }
                 else {
                     //call the report generation page
-                 downloadrpt(exelstart,exelend,countyrpt,rptsubcounty) ;  
+                 downloadrpt(exelstart,exelend,countyrpt,rptsubcounty,rptfacil) ;  
                     
                 }
         
@@ -3517,14 +3400,16 @@ function getreport(){
 
 
 
-  function downloadrpt(startdate,enddate,cnty,rptsubcounty){
+  function downloadrpt(startdate,enddate,cnty,rptsubcounty,rptfacil){
       
                 $('.loading').show();
                 $('#excelreportbtn').hide();
-               
+               console.log("facility ni _"+rptfacil+"_");
                 //?startdate=" + startdate + "&enddate=" + enddate + "&cbos=" + cbos
+             var fc="";
+             if(rptfacil!=="" && rptfacil!==null){fc="&facil="+rptfacil;}
              
-                var ur=hostname+"RawData?startdate="+startdate+"&enddate="+enddate+"&rpt_county="+cnty+"&rpt_subcounty="+rptsubcounty;
+                var ur=hostname+"RawData?startdate="+startdate+"&enddate="+enddate+"&rpt_county="+cnty+"&rpt_subcounty="+rptsubcounty+fc;
                 console.log(ur);
                 $.fileDownload(ur).done( function () {
                    // alert("done");
@@ -3686,7 +3571,7 @@ function getmonth(){
          
        
    
-         $.getJSON("months.json",function(result){
+         $.getJSON("json/months.json",function(result){
              var monthid="";
              var monthname="";
              var monthno="";
@@ -3740,12 +3625,12 @@ var sampletype=$("#sampletype").val();
 
 console.log(" sample type ni "+sampletype);
 
-    if(sampletype!='Routine ART Monitoring' && sampletype!='Clinical failure' && sampletype!='Repeat after 3 month' && sampletype!='Repeat after 1 month' && sampletype!='Baseline PMTCT'){
+    if(sampletype!=='Routine ART Monitoring' && sampletype!=='Clinical failure' && sampletype!=='Repeat after 3 month' && sampletype!=='Repeat after 1 month' && sampletype!=='Baseline PMTCT'){
         
         //then hide
         
         
-        $(".ficha").hide();
+       // $(".ficha").hide();
         
         
         
@@ -3776,7 +3661,7 @@ function ficha1(){
 //"Change to 2nd line
 
 var at=$("#actiontaken").val();
-    if(at!='Change to 2nd line'){
+    if(at!=='Change to 2nd line'){
         
         //then hide
         
@@ -3803,7 +3688,7 @@ function ficha3(){
 //"Change to 2nd line
 
 var at=$("#actiontaken").val();
-    if(at!='Change to 3rd line'){
+    if(at!=='Change to 3rd line'){
         
         //then hide
         
@@ -3824,60 +3709,6 @@ ficha3();
 
 
 
-
-function getdrugs(){
-    
-    
-     $(document).ready(function(){
-         
-       
-   
-         $.getJSON("drugs1.json",function(result){
-             var drugid="";
-             var drugcode="";
-             var drugdetails="";
-         
-             
-             var line1="<option value=''>Select regimen</option>";
-             var line2="<option value=''>Select regimen</option>";
-             var line3="<option value=''>Select regimen</option>";
-             if(year!==''){
-             for(a=0;a< result.length; a++){
-                 
-                  if(result[a].line==='1st line'){
-                 
-            line1+="<option value='"+result[a].code+"'>"+result[a].id+" ["+result[a].code+"]"+"</option>";
-                                                
-                                                 }
-                 
-                 if(result[a].line==='2nd line'){
-                 
-            line2+="<option value='"+result[a].code+"'>"+result[a].id+" ["+result[a].code+"]"+"</option>";
-                                                
-                                                 }
-                
-                 if(result[a].line==='3rd line'){
-                 
-            line3+="<option value='"+result[a].code+"'>"+result[a].id+" ["+result[a].code+"]"+"</option>";
-                                                
-                                                 }
-             
-                 
-                                            }
-        
-        $("#firstregimen").html(line1);
-        $("#secondregimen").html(line2);
-        $("#thirdregimen").html(line3);
-        
-             }
-        
-         });
-         
-    });
-    
-    }
-
-getdrugs();
 
 
 function tarehe(){
@@ -3903,20 +3734,20 @@ function loadsubcounty() {
     var cnty=$("#rpt_county").val();
     
    
-         $.getJSON("subcounty.json",function(result){
+         $.getJSON("json/subcounty.json",function(result){
              var subcounty="";
              var county="";
-             
-         
-             
+            
              var subcounty="<option value=''>Select subcounty</option>";
             
              
              for(a=0;a< result.length; a++){
                  
-                  if(result[a].County===cnty){
+            console.log(result[a].county);
                  
-            subcounty+="<option value='"+result[a].SubCounty+"'> "+result[a].SubCounty+" </option>";
+                  if(result[a].county===cnty){
+                 
+            subcounty+="<option value='"+result[a].subcounty+"'> "+result[a].subcounty+" </option>";
                                                 
                                               }
                  
@@ -3934,11 +3765,54 @@ function loadsubcounty() {
     
     
 }
+function ldfacility() {
+   
+       
+        var sbc=$("#rpt_subcounty").val();
+       
+      
+        var facilities="";
+        
+              $.ajax({
+                         url:'json/sites1.json',                            
+                    type:'get',  
+                    dataType: 'json',  
+                    success: function(data) {
+                        
+                       
+                     for(var i=0;i<data.length;i++){
+                         
+if((data[i].pmtct===1 || data[i].art===1) && data[i].isactive==='Yes' && data[i].subcounty===sbc ){
+    //think of how to get the selected value.
+    
+                  facilities+="<option value='"+data[i].mflcode+"'>"+data[i].facility_name+"</option>"; 
+           
+                     }
+              
+              
+              
+             
+                        
+                     }
+                     //alert(facilities);
+                      $("#rpt_facility").html(facilities);
+                   $(document).ready(function() {
+            //$('#lyricstable').DataTable();
+              $('#rpt_facility').select2(); 
+             
+                                 } );
+                     
+                      }
+                  
+       
+        });  
+   
+}
 
 
-function reportingRates( mflcodes){
+function reportingRates(mflcodes){
     
-    
+    mflcodes=mflcodes.trim();
     
      $.ajax({
                     url:hostname+"reportingrates?rpt_facils="+mflcodes,                            
@@ -3970,12 +3844,337 @@ function reportingRates( mflcodes){
 </script>
 
 <script>
-if('serviceWorker' in navigator) 
-{
-  navigator.serviceWorker
-           .register('serviceworker.js')
-           .then(function() { console.log("Service Worker Registered"); });
+
+
+
+function loadregimen(){
+    var regni=$("#cccno").find(':selected').data("regimen");
+    var samplet=$("#cccno").find(':selected').data("sampletype");
+   //alert(regni);
+  $("#artregimen").html('<b>'+regni+'</b>');  
+  $("#sampletype").val(samplet);  
+   
+        if(regni!==''){
+            
+            $(".fichaartreg").show();
+            
+        }
+        else {
+            
+            
+             $(".fichaartreg").hide();
+        }
+        
 }
+
+
+function supportgroupdate(){
+    
+   var spt=$("#insupportgrp").val();
+   //alert(regni);
+
+   
+        if(spt==='No' || spt==='NA' ){
+               $(".supportgrp_enrol_date").hide();
+           
+        }
+        else {
+            
+         $(".supportgrp_enrol_date").show();     
+          
+        }  
+    
+    
+}
+
+
+
+function decideactiontaken(){
+    
+   var spt=$("#secondsampleresults").val();
+   //alert(regni);
+
+   
+        if(spt==='LDL'){
+               $("#actiontaken").val("Retain Regimen");
+          
+            
+        } 
+        else {
+            
+            $("#actiontaken").val("");  
+            
+        }
+    
+    
+}
+
+
+function toggleactiontaken_other()
+{
+    
+   var actionni=$("#actiontaken").val();
+   //alert(regni);
+
+   
+        if(actionni==='Others'){
+               $(".actiontaken_other").show();
+          
+            
+        }
+        else{
+          
+             $(".actiontaken_other").hide();
+            
+        }
+    
+    
+}
+
+
+
+function explainnonswitch(){
+    
+   var actionni=$("#actiontaken").val();
+   var res=$("#secondsampleresults").val();
+   
+   
+   //alert(regni);
+
+   
+        if(actionni==='Retain Regimen' && res==='>1000' ){
+               $(".repeatconf_notswitched_explained").show();
+          
+            
+        }
+        else{
+          
+             $(".repeatconf_notswitched_explained").hide();
+            
+        }
+    
+    
+    
+}
+
+
+function notsuppressedexplained(){
+    //
+    //
+    
+    var res=$("#postswitch_vl_results").val();
+   
+   
+   //alert(regni);
+
+   
+        if(res==='>1000'){
+               $(".fichacomments").show();
+         }
+        else{
+             $(".fichacomments").hide();
+         }
+    
+    
+}
+
+
+
+
+function otherreasonfornonswitch(){
+
+
+
+var res=$("#repeatconf_notswitched_explained").val();
+  
+
+        if( res==='Other' ){
+               $(".repeatconf_notswitched_other_explained").show();
+          
+            
+        }
+        else{
+          
+             $(".repeatconf_notswitched_other_explained").hide();
+            
+        }
+    
+    
+
+}
+
+
+
+function fichapostswitch(){
+    //
+    var spt=$("#secondsampleresults").val();
+   //alert(regni);
+
+   
+        if(spt==='LDL'){
+              
+            $(".fichavl2").hide();
+            
+        }
+        else{
+          
+           
+             $(".fichavl2").show();
+        }
+    
+    
+}
+
+
+
+function togglelasttca(){
+    
+      //
+    var otc=$("#otheroutcomes").val();
+   //alert(regni);
+
+   
+        if(otc!=='Active'){
+              
+            $(".lasttca").show();
+            
+        }
+        else{
+          
+           
+             $(".lasttca").hide();
+             $("#lasttca").val("");
+        }
+    
+    
+}
+
+
+
+
+
+
+
+
+var userslistdb = new PouchDB('stfusers_v2');
+var remoteCouch = false;
+var receivedstfusers;
+
+
+
+function adduserslist(active,userid,fname,lname,phone,facility,mflcode,mail_user,mail_sto,usertype,mail_supervisor) 
+{
+   receivedstfusers = {
+_id: userid,	
+isactive:active,
+fname:fname,
+lname:lname,
+phone:phone,
+facility:facility,
+mflcode:mflcode,
+mail_user:mail_user,
+mail_sto:mail_sto,
+usertype:usertype,
+mail_supervisor: mail_supervisor
+  };
+  userslistdb.put(receivedstfusers, function callback(err, result) {
+    if (!err) {
+      //console.log('targets added succesfully');
+    }
+  });
+}
+
+function updateuserslist(active,userid,fname,lname,phone,facility,mflcode,mail_user,mail_sto,usertype,mail_supervisor){
+  //console.log(id);
+   userslistdb.get(userid).then(function (doc) {
+ 
+   if(userid!=='null' && userid!=='' ){
+       
+
+doc.isactive =active;
+doc.fname =fname;
+doc.lname =lname;
+doc.phone =phone;
+doc.facility =facility;
+doc.mflcode =mflcode;
+doc.mail_user =mail_user;
+doc.mail_sto =mail_sto;
+doc.usertype =usertype;
+doc.mail_supervisor = mail_supervisor;
+        
+  
+  return userslistdb.put(doc);
+                                         }
+});      
+        
+    
+}
+
+function getuserslist(){
+    
+   
+              $.ajax({
+                    url:hostname+'getusers',                            
+                    type:'get',  
+                    dataType: 'json',  
+                    success: function(data) {
+                   
+             
+                     for(var i=0;i<data.length;i++){
+                         
+                     
+                        
+   adduserslist( data[i].active,data[i].userid,data[i].fname,data[i].lname,data[i].phone,data[i].facility,data[i].mflcode,data[i].mail_user,data[i].mail_sto,data[i].usertype,data[i].mail_supervisor);
+   updateuserslist( data[i].active,data[i].userid,data[i].fname,data[i].lname,data[i].phone,data[i].facility,data[i].mflcode,data[i].mail_user,data[i].mail_sto,data[i].usertype,data[i].mail_supervisor);
+                        
+                      if(i===data.length-2){
+                          activateusers();
+                          
+                      } 
+                     }
+                       
+                   
+        
+                                           }
+                                           
+                                              ,
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+        //alert('offline');
+	
+    }
+                        
+                         });
+    
+    
+}
+
+getuserslist();
+
+
+
+
+
+
+
+function clearsws(){
+    
+    //caches.delete(/*name*/);
+  navigator.serviceWorker.getRegistrations()
+  .then(registrations => {
+    registrations.forEach(registration => {
+      registration.unregister();
+    }) ;
+  });
+  console.log("clearing cache");
+  
+   window.location.reload();
+}
+
+
+
+
+
+
 </script>
 
 	</body>
