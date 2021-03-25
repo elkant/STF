@@ -23,7 +23,7 @@ import scripts.updatestatus;
  *
  * @author Emmanuel E
  */
-public class exportdata extends HttpServlet {
+public class exportv2 extends HttpServlet {
 
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -74,7 +74,22 @@ String collectiondate=null;
 String exportid="";
  String dbname="outcomes";       
 
-        
+        String cur_reg_startdate=null;
+String vir_clinic_startdate=null;
+String insupportgrp=null;
+String supportgrp_enrol_date=null;
+String repeatconf_notswitched_explained=null;
+String postswitch_adherencesessions=null;
+String postswitch_sample_col_date=null;
+String postswitch_sampletype=null;
+String postswitch_results_rec_date=null;
+String postswitch_vl_results=null;
+String not_suppressed_explained=null;
+String actiontaken_other=null;
+String repeatconf_notswitched_other_explained=null;
+String repeatconf_results_rec_date=null;
+String lasttca=null;
+
 id=request.getParameter("id");      
          
 year=request.getParameter("year");
@@ -92,9 +107,30 @@ firstregimen=request.getParameter("firstregimen");
 secondregimen=request.getParameter("secondregimen");
 thirdregimen=request.getParameter("thirdregimen");
 otheroutcomes=request.getParameter("otheroutcomes");
-comments=request.getParameter("comments");
+
+if(request.getParameter("lasttca")!=null)
+{
+lasttca=request.getParameter("lasttca");
+}
+comments="stf version 4";
 secondregdate=request.getParameter("secondregdate");
 collectiondate=request.getParameter("datecollected");
+
+cur_reg_startdate= request.getParameter("cur_reg_startdate");
+vir_clinic_startdate= request.getParameter("vir_clinic_startdate");
+insupportgrp= request.getParameter("insupportgrp");
+supportgrp_enrol_date= request.getParameter("supportgrp_enrol_date");
+repeatconf_notswitched_explained= request.getParameter("repeatconf_notswitched_explained");
+postswitch_adherencesessions= request.getParameter("postswitch_adherencesessions");
+postswitch_sample_col_date= request.getParameter("postswitch_sample_col_date");
+postswitch_sampletype= request.getParameter("postswitch_sampletype");
+postswitch_results_rec_date= request.getParameter("postswitch_results_rec_date");
+postswitch_vl_results= request.getParameter("postswitch_vl_results");
+not_suppressed_explained= request.getParameter("not_suppressed_explained");
+actiontaken_other= request.getParameter("actiontaken_other");
+repeatconf_notswitched_other_explained= request.getParameter("repeatconf_notswitched_other_explained");
+repeatconf_results_rec_date= request.getParameter("repeatconf_results_rec_date");
+
 
 
 if(request.getParameter("db")!=null){
@@ -123,7 +159,7 @@ String usermail="";
             conn.rs = conn.st.executeQuery("SHOW VARIABLES LIKE 'max_allowed_packet' ");
             
             if (conn.rs.next()) {
-                System.out.println("Max_allowed_connection_" + conn.rs.getString(2));
+                //System.out.println("Max_allowed_connection_" + conn.rs.getString(2));
 
             }            
                   
@@ -136,7 +172,7 @@ String usermail="";
    conn.rs=conn.st.executeQuery(checkexisting);
    
    if(conn.rs.next()){
-       System.out.println(" Data for "+cccnumber+" already added ");
+       //System.out.println(" Data for "+cccnumber+" already added ");
    
    //do update code here
    
@@ -145,7 +181,7 @@ String usermail="";
 // viral_load_mothers_perc,eid_done_perc,pmtct_hiv_pos_perc,access_viralload_perc,linkage_perc,hiv_pos_yield_perc,Testing_uptake_perc,outpatient_hiv_pos_perc,inpatient_hiv_pos_perc,outpatient_uptake_perc,inpatient_uptake_perc,viral_load_mothers_cmts,eid_done_cmts,pmtct_hiv_pos_cmts,access_viralload_cmts,linkage_cmts,hiv_pos_yield_cmts,Testing_uptake_cmts,outpatient_hiv_pos_cmts,inpatient_hiv_pos_cmts,outpatient_uptake_cmts,inpatient_uptake_cmts,    
 // viral_load_mothers_perc,eid_done_perc,pmtct_hiv_pos_perc,access_viralload_perc,linkage_perc,hiv_pos_yield_perc,Testing_uptake_perc,outpatient_hiv_pos_perc,inpatient_hiv_pos_perc,outpatient_uptake_perc,inpatient_uptake_perc,viral_load_mothers_cmts,eid_done_cmts,pmtct_hiv_pos_cmts,access_viralload_cmts,linkage_cmts,hiv_pos_yield_cmts,Testing_uptake_cmts,outpatient_hiv_pos_cmts,inpatient_hiv_pos_cmts,outpatient_uptake_cmts,inpatient_uptake_cmts,    
        
-          insert=" update "+dbname+" set cccno=?,suppressed=?,sampletype=?,patientcontacted=?,repeatconf_adherencemonths=?,repeatconf_sample_col_date=?,reasonineligible=?,otherreasonineligible=?,secondsampleres=?,actiontaken=?,firstreg=?,secondreg=?,comments=?,yearmonth=?,user=?,secondregdate=?,thirdregimen=?,finaloutcome=?,collectiondate=? where id=? ";
+          insert=" update "+dbname+" set cccno=?,suppressed=?,sampletype=?,patientcontacted=?,repeatconf_adherencemonths=?,repeatconf_sample_col_date=?,reasonineligible=?,otherreasonineligible=?,repeatconf_results=?,actiontaken=?,firstreg=?,secondreg=?,comments=?,yearmonth=?,user=?,secondregdate=?,thirdregimen=?,finaloutcome=?,collectiondate=?,cur_reg_startdate=?,vir_clinic_startdate=?,insupportgrp=?,supportgrp_enrol_date=?,repeatconf_notswitched_explained=?,postswitch_adherencesessions=?,postswitch_sample_col_date=?,postswitch_sampletype=?,postswitch_results_rec_date=?,postswitch_vl_results=?,not_suppressed_explained=?,actiontaken_other=?,repeatconf_notswitched_other_explained=?,repeatconf_results_rec_date=?,lasttca=? where id=? ";
                       conn.pst1=conn.conne.prepareStatement(insert);   
 //facilityname.startdate.enddate.hiv_pos_target_child.hiv_pos_target_adult.hiv_pos_target_total.hiv_pos_child.hiv_pos_adult.hiv_pos_total.new_care_child.new_care_adult.new_care_total.new_art_target_child.new_art_target_adult.new_art_target_total.started_art_child.started_art_adult.started_art_total.viral_load_target_child.viral_load_target_adult.viral_load_target_total.viral_load_done_child.viral_load_done_adult.viral_load_done_total.ipt_target_child.ipt_target_adult.ipt_target_total.ipt_child.ipt_adult.ipt_total.testing_target_child.testing_target_adult.testing_target_total.test_child.test_adult.test_total.pmtct_hiv_pos_target.pmtct_hiv_pos.eid_target.eid_done.viral_load_mothers_target.viral_load_mothers_done.user.hiv_pos_yield_perc_child.hiv_pos_yield_perc_adult.hiv_pos_yield_perc_all.hiv_pos_care_perc_child.hiv_pos_care_perc_adult.hiv_pos_care_perc_all.started_art_perc_child.started_art_perc_adult.started_art_perc_all.viral_test_perc_child.viral_test_perc_adult.viral_test_perc_all.ipt_done_perc_child.ipt_done_perc_adult.ipt_done_perc_all.tested_perc_child.tested_perc_adult.tested_perc_all.hiv_pos_yield_cmts.hiv_pos_care_cmts.started_art_cmts.viral_test_cmts.ipt_done_cmts.tested_cmts.viral_load_mothers_perc.eid_done_perc.pmtct_hiv_pos_perc.viral_load_mothers_cmts.eid_done_cmts.pmtct_hiv_pos_cmts
                           
@@ -170,7 +206,26 @@ String usermail="";
                         conn.pst1.setString(17,thirdregimen);                        
                         conn.pst1.setString(18,otheroutcomes);
                         conn.pst1.setString(19,collectiondate);
-                        conn.pst1.setString(20,id);
+                        conn.pst1.setString(20,cur_reg_startdate);
+                        
+conn.pst1.setString(21,vir_clinic_startdate);
+conn.pst1.setString(22,insupportgrp);
+conn.pst1.setString(23,supportgrp_enrol_date);
+conn.pst1.setString(24,repeatconf_notswitched_explained);
+conn.pst1.setString(25,postswitch_adherencesessions);
+conn.pst1.setString(26,postswitch_sample_col_date);
+conn.pst1.setString(27,postswitch_sampletype);
+conn.pst1.setString(28,postswitch_results_rec_date);
+conn.pst1.setString(29,postswitch_vl_results);
+conn.pst1.setString(30,not_suppressed_explained);
+conn.pst1.setString(31,actiontaken_other);
+conn.pst1.setString(32,repeatconf_notswitched_other_explained);
+conn.pst1.setString(33,repeatconf_results_rec_date);
+conn.pst1.setString(34,lasttca);
+
+                        
+                        
+                        conn.pst1.setString(35,id);
                    
                         
                         
@@ -180,13 +235,13 @@ String usermail="";
                              String mywhere=" isupdated=0 and Patient_CCC_No='"+cccnumber+"'";
             us.numberofupdates(mywhere, conn);
                             
-                            txtresponse="<font color='green'> Warning: Data for <b> "+cccnumber+" </b> updated succesfully for year "+year+" and month  "+month+" using an outdated STF system version.</font>";
+                            txtresponse="<font color='green'> Data for <b> "+cccnumber+" </b> updated succesfully for year "+year+" and month  "+month+" </font>";
                             //if this si a different export , send email notification
                             if(!exportid.equals("")){
                                 
                              //if(isnewRecords(exportid, user)){
                                  //send email
-                                // sm.Sendemail("STF IMPORT","Hi ,  \nThis is to notify you that New STFs data from user "+user.split(",")[0]+" has been updated succesfully. \n \n For more details, generate output reports http://hsdsacluster2.fhi360.org:8080/STF/. \n \nPlease do not reply to this mail, It is system generated. ", "Updated STF Data"," EKaunda@fhi360.org,"+usermail);
+                                // sm.Sendemail("STF IMPORT","Hi ,  \nThis is to notify you that New STFs data from user "+user.split(",")[0]+" has been updated succesfully. \n \n For more details, generate output reports https://hsdsacluster2.fhi360.org:8443/thestf/. \n \nPlease do not reply to this mail, It is system generated. ", "Updated STF Data"," EKaunda@fhi360.org,"+usermail);
                                  
                              //}
                             }
@@ -199,8 +254,9 @@ String usermail="";
                         }
    
    
-                     myresponse= " update "+dbname+" set cccno='"+cccnumber+"',suppressed='',sampletype='"+sampletype+"',patientcontacted='"+patientcontacted+"',repeatconf_adherencemonths='"+adherencemonths+"',repeatconf_sample_col_date='"+secondsampledate+"',reasonineligible='"+noteligible+"',otherreasonineligible='"+noteligibleother+"',repeatconf_results='"+secondsampleresults+"',actiontaken='"+actiontaken+"',firstreg='"+firstregimen+"',secondreg='"+secondregimen+"',comments='"+comments+"',yearmonth='"+year+"_"+month+"',secondregdate='"+secondregdate+"', thirdregimen='"+thirdregimen+"', finaloutcome='"+otheroutcomes+"', collectiondate='"+collectiondate+"' where id='"+id+"'";
-                      System.out.println(myresponse);
+                     myresponse= " update "+dbname+" set cccno='"+cccnumber+"',suppressed='',sampletype='"+sampletype+"',patientcontacted='"+patientcontacted+"',repeatconf_adherencemonths='"+adherencemonths+"',repeatconf_sample_col_date='"+secondsampledate+"',reasonineligible='"+noteligible+"',otherreasonineligible='"+noteligibleother+"',repeatconf_results='"+secondsampleresults+"',actiontaken='"+actiontaken+"',firstreg='"+firstregimen+"',secondreg='"+secondregimen+"',comments='"+comments+"',yearmonth='"+year+"_"+month+"',secondregdate='"+secondregdate+"', thirdregimen='"+thirdregimen+"', finaloutcome='"+otheroutcomes+"', collectiondate='"+collectiondate+"' ,cur_reg_startdate='"+cur_reg_startdate+"',vir_clinic_startdate='"+vir_clinic_startdate+"',insupportgrp='"+insupportgrp+"',supportgrp_enrol_date='"+supportgrp_enrol_date+"',repeatconf_notswitched_explained='"+repeatconf_notswitched_explained+"',postswitch_adherencesessions='"+postswitch_adherencesessions+"',postswitch_sample_col_date='"+postswitch_sample_col_date+"',postswitch_sampletype='"+postswitch_sampletype+"',postswitch_results_rec_date='"+postswitch_results_rec_date+"',postswitch_vl_results='"+postswitch_vl_results+"',not_suppressed_explained='"+not_suppressed_explained+"',actiontaken_other='"+actiontaken_other+"',repeatconf_notswitched_other_explained='"+repeatconf_notswitched_other_explained+"',repeatconf_results_rec_date='"+repeatconf_results_rec_date+"',lasttca='"+lasttca+"' where id='"+id+"'"; 
+
+                     // System.out.println(myresponse);
                         
    
    }
@@ -209,15 +265,15 @@ String usermail="";
    //do insert code here
    
       myresponse="insert into "+dbname+" "
-  + "( id,cccno,suppressed,sampletype,patientcontacted,repeatconf_adherencemonths,repeatconf_sample_col_date,reasonineligible,otherreasonineligible,repeatconf_results,actiontaken,firstreg,secondreg,comments,yearmonth,user,secondregdate ,thirdregimen,finaloutcome,collectiondate) "
+  + "( id,cccno,suppressed,sampletype,patientcontacted,repeatconf_adherencemonths,repeatconf_sample_col_date,reasonineligible,otherreasonineligible,repeatconf_results,actiontaken,firstreg,secondreg,comments,yearmonth,user,secondregdate ,thirdregimen,finaloutcome,collectiondate,cur_reg_startdate,vir_clinic_startdate,insupportgrp,supportgrp_enrol_date,repeatconf_notswitched_explained,postswitch_adherencesessions,postswitch_sample_col_date,postswitch_sampletype,postswitch_results_rec_date,postswitch_vl_results,not_suppressed_explained,actiontaken_other,repeatconf_notswitched_other_explained,repeatconf_results_rec_date,lasttca) "
 + " values ('"+id+"','"+cccnumber+"','','"+sampletype+"','"+patientcontacted+"','"+adherencemonths+"','"+secondsampledate+"','"+noteligible+"','"+noteligibleother+"',"
-  + "'"+secondsampleresults+"','"+actiontaken+"','"+firstregimen+"','"+secondregimen+"','"+comments+"','"+year+"_"+month+"','"+user+"','"+secondregdate+"','"+thirdregimen+"','"+otheroutcomes+"','"+collectiondate+"')";
-      System.out.println(myresponse);                   
+  + "'"+secondsampleresults+"','"+actiontaken+"','"+firstregimen+"','"+secondregimen+"','"+comments+"','"+year+"_"+month+"','"+user+"','"+secondregdate+"','"+thirdregimen+"','"+otheroutcomes+"','"+collectiondate +"','"+cur_reg_startdate+"','"+vir_clinic_startdate+"','"+insupportgrp+"','"+supportgrp_enrol_date+"','"+repeatconf_notswitched_explained+"','"+postswitch_adherencesessions+"','"+postswitch_sample_col_date+"','"+postswitch_sampletype+"','"+postswitch_results_rec_date+"','"+postswitch_vl_results+"','"+not_suppressed_explained+"','"+actiontaken_other+"','"+repeatconf_notswitched_other_explained+"','"+repeatconf_results_rec_date +"','"+lasttca+"')";
+     // System.out.println(myresponse);                   
             
          
        
-          insert="insert into "+dbname+" ( id,cccno,suppressed,sampletype,patientcontacted,repeatconf_adherencemonths,repeatconf_sample_col_date,reasonineligible,otherreasonineligible,repeatconf_results,actiontaken,firstreg,secondreg,comments,yearmonth,user ,secondregdate,thirdregimen,finaloutcome,collectiondate) "
-                 + " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+          insert=" insert into "+dbname+" ( id,cccno,suppressed,sampletype,patientcontacted,repeatconf_adherencemonths,repeatconf_sample_col_date,reasonineligible,otherreasonineligible,repeatconf_results,actiontaken,firstreg,secondreg,comments,yearmonth,user ,secondregdate,thirdregimen,finaloutcome,collectiondate,cur_reg_startdate,vir_clinic_startdate,insupportgrp,supportgrp_enrol_date,repeatconf_notswitched_explained,postswitch_adherencesessions,postswitch_sample_col_date,postswitch_sampletype,postswitch_results_rec_date,postswitch_vl_results,not_suppressed_explained,actiontaken_other,repeatconf_notswitched_other_explained,repeatconf_results_rec_date,lasttca) "
+                 + " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
                       conn.pst1=conn.conne.prepareStatement(insert);    
                           
                         conn.pst1.setString(1,id);
@@ -240,6 +296,22 @@ String usermail="";
                         conn.pst1.setString(18,thirdregimen);
                         conn.pst1.setString(19,otheroutcomes);
                         conn.pst1.setString(20,collectiondate);
+                        conn.pst1.setString(21,cur_reg_startdate);
+conn.pst1.setString(22,vir_clinic_startdate);
+conn.pst1.setString(23,insupportgrp);
+conn.pst1.setString(24,supportgrp_enrol_date);
+conn.pst1.setString(25,repeatconf_notswitched_explained);
+conn.pst1.setString(26,postswitch_adherencesessions);
+conn.pst1.setString(27,postswitch_sample_col_date);
+conn.pst1.setString(28,postswitch_sampletype);
+conn.pst1.setString(29,postswitch_results_rec_date);
+conn.pst1.setString(30,postswitch_vl_results);
+conn.pst1.setString(31,not_suppressed_explained);
+conn.pst1.setString(32,actiontaken_other);
+conn.pst1.setString(33,repeatconf_notswitched_other_explained);
+conn.pst1.setString(34,repeatconf_results_rec_date);
+conn.pst1.setString(35,lasttca);
+
             
                      
                         
@@ -249,7 +321,7 @@ String usermail="";
                             String mywhere=" isupdated=0 and Patient_CCC_No='"+cccnumber+"'";
                             us.numberofupdates(mywhere, conn);
                             
-                            txtresponse="<font color='green'> Warning: Data for "+cccnumber+" added succesfully for year "+year+" and month "+month+" using an outdated STF system version. </font>";
+                            txtresponse="<font color='green'> Data for "+cccnumber+" added succesfully for year "+year+" and month "+month+" </font>";
                            //isnewRecords(String id, String emails, dbConnweb conn)
                             //add team leaders variable at this point 
                             //sm.Sendemail("STF IMPORT"," Hi, \nThis is to notify you that new data for patient whose CCC number is "+cccnumber+" has been added succesfully by   user "+user.split(",")[0]+" for Year "+year+" and month "+month+". \n \n Please do not reply to this mail. It is system generated ", "STF data export for "+cccnumber+" & Year "+year+" , Month "+month,"EKaunda@fhi360.org"+usermail);
@@ -258,7 +330,7 @@ String usermail="";
                                 
                              if(isnewRecords(exportid, user)){
                                  //send email
-                                //  sm.Sendemail("STF IMPORT","Hi ,  \nThis is to notify you that New STFs data from user "+user.split(",")[0]+" has been exported succesfully using an Old STF system version. \n \n . Please use this link to access the new STF version https://hsdsacluster2.fhi360.org:8443/thestf/. \n \nPlease do not reply to this mail, It is system generated. ", "Warning: OLD STF VERSION"," EKaunda@fhi360.org,"+usermail);
+                                  //sm.Sendemail("STF IMPORT","Hi ,  \nThis is to notify you that New STFs data from user "+user.split(",")[0]+" has been exported succesfully. \n \n For more details, generate output reports here https://hsdsacluster2.fhi360.org:8443/thestf/. \n \nPlease do not reply to this mail, It is system generated. ", "New STF Data"," EKaunda@fhi360.org,"+usermail);
                                  
                              }
                             }
@@ -350,15 +422,16 @@ String usermail="";
             dbConnweb conn= new dbConnweb();
             
             String check="select id from exporthistory where id='"+id+"' ";
-            System.out.println(""+check);
+            //System.out.println(""+check);
             conn.rs_6=conn.st_6.executeQuery(check);
             
-            if(conn.rs_6.next()){
+            if(conn.rs_6.next())
+            {
              isrecordnew=false; 
-                System.out.println(" Kuna record ");
+              //  System.out.println(" Kuna record ");
             }
             else {
-                 System.out.println(" hakuna record ");
+               //  System.out.println(" hakuna record ");
             // insert
                 isrecordnew=true;
                 
@@ -366,7 +439,7 @@ String usermail="";
             }
             
             
-            if(conn.st!=null){conn.st.close();}  
+         if(conn.st!=null){conn.st.close();}  
          if(conn.st_5!=null){conn.st_5.close();}  
          if(conn.st_6!=null){conn.st_6.close();}  
          if(conn.rs!=null){conn.rs.close();}  

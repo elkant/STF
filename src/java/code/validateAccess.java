@@ -25,7 +25,7 @@ public class validateAccess extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             
-         String keycode="909090";
+         String keycode="959595";
          String userkeycode="";
          String returnvalue="";
          if(request.getParameter("kc")!=null){

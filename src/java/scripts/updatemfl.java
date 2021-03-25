@@ -5,7 +5,7 @@
  */
 package scripts;
 
-import Data.UploadSTFData;
+import Upload.UploadSTFData;
 import database.dbConnweb;
 import java.io.IOException;
 import java.io.PrintWriter;

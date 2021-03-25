@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Data;
+package Upload;
 
 import database.dbConnweb;
 import java.io.File;
@@ -270,7 +270,7 @@ if(cellCollection_Date.getCellType()==1){
     //numeric
        Collection_Date =cellCollection_Date.getStringCellValue();
 }
-
+                  System.out.println(" collection date data type"+cellCollection_Date.getCellType());
 
 
 

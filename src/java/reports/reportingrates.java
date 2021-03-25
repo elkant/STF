@@ -80,14 +80,15 @@ public class reportingrates extends HttpServlet {
 		
 		//========Query two====Facility Details==============
         
-        String qry = " call rpt_reportingrates(\""+orgunits+"\")";
+        String qry = " call rpt_eac_cascade(\""+orgunits+"\")";
 
          System.out.println(qry);
         conn.rs = conn.st.executeQuery(qry);
         
          ResultSetMetaData metaData = conn.rs.getMetaData();
         int columnCount = metaData.getColumnCount();
-JSONObject jo= new JSONObject();
+JSONArray ja= new JSONArray();
+
          metaData = conn.rs.getMetaData();
          columnCount = metaData.getColumnCount();
      
@@ -95,15 +96,17 @@ JSONObject jo= new JSONObject();
 
         while (conn.rs.next()) {
 //header rows
+JSONObject jot= new JSONObject();
                 
-             jo.put(conn.rs.getString("indicator"), conn.rs.getInt("value"));
+             jot.put("indicator",conn.rs.getString("indicator"));
+             jot.put("value", conn.rs.getInt("value"));
                     //mycolumns.add(metaData.getColumnLabel(i));
-                   
+              ja.put(jot);
                
            
 		}
            
-          out.println(jo); 
+          out.println(ja); 
            if(conn.st!=null){conn.st.close();}  
          if(conn.st1!=null){conn.st1.close();}  
          if(conn.st_6!=null){conn.st_6.close();}  

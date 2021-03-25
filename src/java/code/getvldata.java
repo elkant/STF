@@ -34,7 +34,9 @@ public class getvldata extends HttpServlet {
             
             String facil="";
             
-            String mywhere="";
+            //get the stfs data from 1st March 2020
+            
+            String mywhere=" where Date_of_Dispatch >= '2020-03-01' and ";
             
             
             
@@ -49,7 +51,8 @@ public class getvldata extends HttpServlet {
             //create a where like where MFL_Code in (1245,256535,7876)  
             if(!facil.equals("")){
             String facilitylist[]=facil.split(",");
-            mywhere=" where MFL_Code in (";
+            
+            mywhere+="  MFL_Code in (";
             for(int a=0;a<facilitylist.length;a++){
             
             if(a>0){
@@ -63,19 +66,14 @@ public class getvldata extends HttpServlet {
             
              mywhere+=") ";
             
-            }
-            
-              //conn.st.executeUpdate("SET GLOBAL max_allowed_packet = 209715200");    
-//             conn.rs= conn.st.executeQuery("SHOW VARIABLES LIKE 'max_allowed_packet' ");    
-//            if(conn.rs.next()){
-//                System.out.println("Max_allowed_connection_"+conn.rs.getString(2));
-//            
+            }            
+         
 //            }
             JSONArray jarr=new JSONArray();
-            String getfacils="SELECT Patient_CCC_No as cccno,Facility_Name as facilityname,MFL_Code as Mflcode, Date_of_Dispatch as datecollected,County as  county,Sub_County as subcounty,isupdated FROM  vl_validation "+mywhere+" order by timestamp desc";
+            String getfacils="SELECT Patient_CCC_No as cccno,Facility_Name as facilityname,MFL_Code as Mflcode, Date_of_Dispatch as datecollected,County as  county,Sub_County as subcounty,isupdated"
+                    + " ,SampleType,Current_Regimen,regimen_line,Date_of_Receiving FROM  vl_validation "+mywhere+" order by timestamp desc";
             
             System.out.println(""+getfacils);
-            
             conn.rs=conn.st.executeQuery(getfacils);
             while (conn.rs.next()){
                  JSONObject jobj= new JSONObject();
@@ -86,6 +84,10 @@ public class getvldata extends HttpServlet {
             jobj.put("facility_name",conn.rs.getString("facilityname"));
             jobj.put("datecollected",conn.rs.getString("datecollected"));
             jobj.put("updatestatus",conn.rs.getString("isupdated"));
+            jobj.put("sampletype",conn.rs.getString("SampleType"));
+            jobj.put("regimen",conn.rs.getString("Current_Regimen"));
+            jobj.put("regimenline",conn.rs.getString("regimen_line"));
+            jobj.put("dateReceived",conn.rs.getString("Date_of_Receiving"));
             
               //Patient_CCC_No ,Facility_Name ,MFL_Code, Date_Collected,County,Sub_County
             jarr.put(jobj);
@@ -94,7 +96,7 @@ public class getvldata extends HttpServlet {
             }
             
             
-             if(conn.st!=null){conn.st.close();}  
+         if(conn.st!=null){conn.st.close();}  
          if(conn.st1!=null){conn.st1.close();}  
          if(conn.st_6!=null){conn.st_6.close();}  
          if(conn.rs!=null){conn.rs.close();}  

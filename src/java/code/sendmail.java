@@ -55,6 +55,8 @@ public String filenames,cu,dates,computername,senderofmail;
         message.setFrom(new InternetAddress(from));
 
         message.setRecipients(Message.RecipientType.TO, toAddress);
+       // message.setFrom("");
+        
 
         message.setSubject(subject);
 

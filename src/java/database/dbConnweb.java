@@ -36,12 +36,8 @@ public final class dbConnweb {
     public dbConnweb() {
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-         //conne = DriverManager.getConnection("jdbc:mysql://localhost:3306/stf?maxAllowedPacket=1000000000","root", "P@ss4M&E!Fhiimpact!");
-      conne = DriverManager.getConnection("jdbc:mysql://kenmysqlserver1.mysql.database.azure.com:3306/stf?verifyServerCertificate=false&useSSL=true&requireSSL=true","websqladmkn@kenmysqlserver1", "P@$$w9rd4$q12Use1nK#K");
-         
-         //conne = DriverManager.getConnection("jdbc:mysql://104.45.29.195:3306/stf","aphiaplus", "Pass4M&E!");
-         //conne = DriverManager.getConnection("jdbc:mysql://localhost:3306/stf?maxAllowedPacket=1000000000","root", "70450289");
-            
+         conne = DriverManager.getConnection("jdbc:mysql://localhost:3306/stf","root", "test");
+     
             //if the saved host name is less than 2 letters long, then thats not a genuine host name
 
             URL location = dbConnweb.class.getProtectionDomain().getCodeSource().getLocation();

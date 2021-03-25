@@ -5,6 +5,7 @@
  */
 package reports;
 
+
 import General.IdGenerator;
 import database.dbConnweb;
 import java.io.ByteArrayOutputStream;
@@ -13,7 +14,7 @@ import java.io.OutputStream;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -99,16 +100,27 @@ public class RawData extends HttpServlet {
 
         stylesum.setFont(fontx);
         stylesum.setWrapText(true);
-
-        HSSFSheet shet = wb.createSheet("STF raw Data");
-
-        String year="";
-       IdGenerator dats= new IdGenerator();
         
-        String startdate="2016-10-01";
+        
+        HashMap<Integer , String> sps= new HashMap<Integer, String>();
+        
+        sps.put(1, "STF raw Data@rpt_rawdata");
+        sps.put(2, "System Users Summary@uploadingrate");
+
+//        HSSFSheet acashet = wb.createSheet("ACA raw Data");
+//        HSSFSheet mcashet = wb.createSheet("MCA raw Data");
+        
+//        HSSFSheet Sheetnames[]={acashet,mcashet};
+
+ String year="";
+       IdGenerator dats= new IdGenerator();
+String startdate="2018-10-01";
         String enddate=dats.toDay();
         String subcounty="";
         String county="";
+        String facil="";
+        
+        
         if(request.getParameter("startdate")!=null)
         {
         
@@ -132,35 +144,75 @@ public class RawData extends HttpServlet {
          county=request.getParameter("rpt_county");
         }
         
+     String [] facilityarr=null;   
+       
+         if (request.getParameterValues("facil") != null ) {
+                facilityarr = request.getParameterValues("facil");
+          facil="(";
+                for (int a = 0; a < facilityarr.length; a++) 
+                {
+
+                    if (a == facilityarr.length - 1) 
+                    {
+
+                        facil += facilityarr[a] + ")";
+
+                    } else {
+
+                        facil += facilityarr[a] + ",";
+
+                            }
+                }
+            }
+        
+        
+        
+        
         dbConnweb conn = new dbConnweb();
+        
+        
         //========Query 1=================
         
         String orgunits="1=1 ";
         
         if(!county.equals("")){
-        orgunits+=" and vl_validation.County like '"+county+"' ";
+        orgunits+=" and county.county like '"+county+"' ";
         }
         if(!subcounty.equals("") ){
             
-         orgunits+=" and vl_validation.Sub_County like '"+subcounty+"' ";
+         orgunits+=" and district.District like '"+subcounty+"' ";
+        
+        }
+         if(!facil.equals("") && !facil.equals("()")){
+            
+         orgunits+=" and MFL_Code in "+facil+" ";
         
         }
         
+        for(int sheetno=1;sheetno <= sps.size();sheetno++){
+        //for(HSSFSheet shet:Sheetnames){
+        
+        HSSFSheet shet = wb.createSheet(sps.get(sheetno).split("@")[0]);
         
         HSSFRow rw0=shet.createRow(1);
         HSSFCell cell = rw0.createCell(0);
-                    cell.setCellValue("STFs report for results dispatched between "+startdate+" and "+enddate);
+                    cell.setCellValue(shet.getSheetName()+" for Period "+startdate+" and "+enddate);
                     cell.setCellStyle(style);
         shet.addMergedRegion(new CellRangeAddress(1, 1, 0,10));
                     
                 int count1  = 3;
         
-       
+              //shet.getSheetName();
+              
+                String storedprocedure="";
+                
         
+                
+                storedprocedure=sps.get(sheetno).split("@")[1];
+                
         //========Query two====Facility Details==============
         
-        String qry = "call rpt_rawdata('"+startdate+"','"+enddate+"',\""+orgunits+"\")";
-
+        String qry = "call "+storedprocedure+" ('"+startdate+"','"+enddate+"',\""+orgunits+"\")";
          System.out.println(qry);
         conn.rs = conn.st.executeQuery(qry);
         
@@ -196,15 +248,17 @@ rw.setHeightInPoints(26);
                 //System.out.print(mycolumns.get(a) + ":" + conn.rs.getString("" + mycolumns.get(a)));
 
                 HSSFCell cell0 = rw.createCell(a);
-                if((a==0) || (a==5) || (a==7)||  (a==24) || (a==26)){
+                 if(isNumeric(conn.rs.getString("" + mycolumns.get(a)))){
                // if(1==1){
                 
-                    cell0.setCellValue(conn.rs.getInt(mycolumns.get(a).toString()));
-                    // cell0.setCellValue(conn.rs.getString("" + mycolumns.get(a)));
+                     cell0.setCellValue(conn.rs.getDouble(mycolumns.get(a).toString()));
+                    
                    }
                 else 
                 {
-                    cell0.setCellValue(conn.rs.getString("" + mycolumns.get(a)));
+                     cell0.setCellValue(conn.rs.getString("" + mycolumns.get(a)));
+                    //cell0.setCellValue(conn.rs.getString("" + mycolumns.get(a)));
+                   
                 }
             
                 cell0.setCellStyle(style2);
@@ -218,8 +272,9 @@ rw.setHeightInPoints(26);
         
         
         //Autofreeze  || Autofilter  || Remove Gridlines ||  
-        
+        if(count1<count-1){
         shet.setAutoFilter(new CellRangeAddress(count1, count - 1, 0, columnCount-1));
+        }
 
         //System.out.println("1,"+rowpos+",0,"+colposcopy);
         for (int i = 0; i <= columnCount; i++) {
@@ -228,6 +283,18 @@ rw.setHeightInPoints(26);
 
         shet.setDisplayGridlines(false);
         shet.createFreezePane(6, 4);
+
+    }
+        
+        if(conn.rs!=null){conn.rs.close();}
+        if(conn.rs1!=null){conn.rs1.close();}
+        if(conn.st!=null){conn.st.close();}
+        if(conn.st1!=null){conn.st1.close();}
+        if(conn.conne!=null){conn.conne.close();}
+        
+        
+        
+        
 
         
          if(conn.st!=null){conn.st.close();}  
@@ -284,4 +351,14 @@ rw.setHeightInPoints(26);
         return "Short description";
     }// </editor-fold>
 
+    
+  public static boolean isNumeric(String strNum) {
+    try {
+        double d = Double.parseDouble(strNum);
+    } catch (NumberFormatException | NullPointerException nfe) {
+        return false;
+    }
+    return true;
+}
+    
 }
