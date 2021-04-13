@@ -14,8 +14,8 @@
 // Names of the two caches used in this version of the service worker.
 // Change to v2, etc. when you update any of the local resources, which will
 // in turn trigger the install event again.
-const PRECACHE = 'stf_precache-v3';
-const RUNTIME = 'stf_runtimev3';
+const PRECACHE = 'stf_precache-v5';
+const RUNTIME = 'stf_runtimev5';
 
 
 		

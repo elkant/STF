@@ -39,7 +39,7 @@ appl.controller('stfcont', function($scope) {
    var vl=[{id:'unsup',val:'>1000'},{id:'sup',val:'<1000'},{id:'rej',val:'Sample Rejected'},{id:'ldl',val:'LDL'}];
    var at=[{id:'Change to 2nd line',val:'Change to 2nd line'},{id:'Change to 3rd line',val:'Change to 3rd line'},{id:'Retain Regimen',val:'Retain Regimen'},{id:'Others',val:'Others (Specify)'}];
    var nw=[{id:'1',val:'Died'},{id:'2',val:'LTFU'},{id:'3',val:'Defaulter'},{id:'4',val:'Transfer Out'},{id:'5',val:'Other'}];
-   var fo=[{id:'1',val:'Active'},{id:'2',val:'Resuppressed at VL confirmatory'},{id:'3',val:'Unsuppressed at 3 month VL post switch'},{id:'4',val:'Defaulter'},{id:'5',val:'LTFU'},{id:'6',val:'Patient Died'}];
+   var fo=[{id:'1',val:'Active'},{id:'2',val:'Resuppressed at VL confirmatory'},{id:'3',val:'Unsuppressed at 3 month VL post switch'},{id:'4',val:'Defaulter'},{id:'5',val:'LTFU'},{id:'6',val:'Patient Died'},{id:'7',val:'Ressuppressed after Regimen Switch'}];
        
     
    
@@ -59,7 +59,7 @@ appl.controller('stfcont', function($scope) {
 
 appl.directive("stfVersion", function() {
   return {
-    template : ` <h5 title="updated 22nd Mar 2021" style="text-align: center;color:blue;">STF Logs version 1.0.0. <label id='totalcccnos'>.</label></h5>`
+    template : ` <h5 title="updated 22nd Mar 2021" style="text-align: center;color:blue;">STF Logs version 5.0.2. <label id='totalcccnos'>.</label></h5>`
   };
 });
 
